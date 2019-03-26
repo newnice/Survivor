@@ -1,5 +1,5 @@
 namespace Nightmare {
     public enum NightmareEvent {
-        CollectGrenade, ShootGrenade
+        PauseGame, CollectGrenade, ShootGrenade
     }
 }

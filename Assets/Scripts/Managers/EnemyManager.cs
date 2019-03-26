@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
 
 namespace Nightmare {
-    public class EnemyManager : MonoBehaviour {
+    public class EnemyManager : PausableObject {
         private PlayerHealth _playerHealth;
         public GameObject enemy;
         public float spawnTime = 3f;
         public Transform[] spawnPoints;
 
         private float timer;
-        private int spawned = 0;
 
         void Start() {
             timer = spawnTime;
         }
 
-        void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             _playerHealth = FindObjectOfType<PlayerHealth>();
         }
 
         void Update() {
+            if(IsPausedGame) return;
             timer -= Time.deltaTime;
             if (timer <= 0f) {
                 Spawn();

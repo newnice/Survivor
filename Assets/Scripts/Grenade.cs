@@ -2,19 +2,19 @@
 using UnityEngine;
 
 namespace Nightmare {
-    public class Grenade : MonoBehaviour {
+    public class Grenade : PausableObject {
         public float explosiveForce = 500f;
         public int explosiveDamage = 50;
         public float explosiveRadius = 2f;
         public float timeOut = 3f;
 
-        bool isPickup;
-        Rigidbody rb;
-        ParticleSystem ps;
-        MeshRenderer mr;
-        TrailRenderer tr;
-        float timer = 0f;
-        float destroyWait;
+        private bool isPickup;
+        private Rigidbody rb;
+        private ParticleSystem ps;
+        private MeshRenderer mr;
+        private TrailRenderer tr;
+        private float timer = 0f;
+        private float destroyWait;
 
         void Awake() {
             rb = GetComponent<Rigidbody>();
@@ -26,15 +26,21 @@ namespace Nightmare {
             destroyWait = Mathf.Max(pMain.startLifetime.constantMin, pMain.startLifetime.constantMax);
         }
 
-        void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             timer = 0f;
             mr.enabled = true;
             tr.enabled = false;
             ps.Stop();
             isPickup = true;
+            EventManager.StartListening(NightmareEvent.ShootGrenade, Shoot);
         }
 
+        protected override void OnPause(bool isPaused) { }
+
         void Update() {
+            if (IsPausedGame) return;
+            
             if (!(timer > 0f)) return;
             timer -= Time.deltaTime;
             if (timer <= 0f) {
@@ -44,17 +50,19 @@ namespace Nightmare {
 
         void OnTriggerEnter(Collider coll) {
             if (isPickup) {
-                Disable();
-                EventManager.TriggerEvent(NightmareEvent.CollectGrenade);
+                if (coll.CompareTag(TagNames.Player)) {
+                    Disable();
+                    EventManager.TriggerEvent(NightmareEvent.CollectGrenade);
+                }
             }
             else {
-                if (coll.CompareTag("Enemy")) {
+                if (coll.CompareTag(TagNames.Enemy)) {
                     Explode();
                 }
             }
         }
 
-        public void Shoot(Vector3 force) {
+        private void Shoot(Vector3 force) {
             if (timer > 0f)
                 return;
 
@@ -72,9 +80,9 @@ namespace Nightmare {
             mr.enabled = false;
 
             var colls = Physics.OverlapSphere(transform.position, explosiveRadius);
-            for (int i = 0; i < colls.Length; i++) {
-                if (!colls[i].CompareTag("Enemy") || colls[i].isTrigger) continue;
-                var victim = colls[i].GetComponent<EnemyHealth>();
+            foreach (var col in colls) {
+                if (!col.CompareTag(TagNames.Enemy) || col.isTrigger) continue;
+                var victim = col.GetComponent<EnemyHealth>();
                 if (victim != null) {
                     victim.TakeDamage(explosiveDamage);
                 }
@@ -92,6 +100,7 @@ namespace Nightmare {
             timer = -1;
             isPickup = false;
             gameObject.SetActive(false);
+            EventManager.StopListening(NightmareEvent.ShootGrenade, Shoot);
         }
     }
 }

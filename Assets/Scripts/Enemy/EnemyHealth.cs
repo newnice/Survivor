@@ -1,109 +1,91 @@
 ﻿using UnityEngine;
 
-namespace Nightmare
-{
-    public class EnemyHealth : MonoBehaviour
-    {
+namespace Nightmare {
+    public class EnemyHealth : MonoBehaviour {
         public int startingHealth = 100;
         public float sinkSpeed = 2.5f;
         public int scoreValue = 10;
         public AudioClip deathClip;
 
-        int currentHealth;
-        Animator anim;
-        AudioSource enemyAudio;
-        ParticleSystem hitParticles;
-        CapsuleCollider capsuleCollider;
-        EnemyMovement enemyMovement;
+        private int _currentHealth;
+        private Animator _anim;
+        private AudioSource _enemyAudio;
+        private ParticleSystem _hitParticles;
+        private CapsuleCollider _capsuleCollider;
+        private EnemyMovement _enemyMovement;
 
-        void Awake ()
-        {
-            anim = GetComponent <Animator> ();
-            enemyAudio = GetComponent <AudioSource> ();
-            hitParticles = GetComponentInChildren <ParticleSystem> ();
-            capsuleCollider = GetComponent <CapsuleCollider> ();
-            enemyMovement = this.GetComponent<EnemyMovement>();
+        void Awake() {
+            _anim = GetComponent<Animator>();
+            _enemyAudio = GetComponent<AudioSource>();
+            _hitParticles = GetComponentInChildren<ParticleSystem>();
+            _capsuleCollider = GetComponent<CapsuleCollider>();
+            _enemyMovement = GetComponent<EnemyMovement>();
         }
 
-        void OnEnable()
-        {
-            currentHealth = startingHealth;
+        void OnEnable() {
+            _currentHealth = startingHealth;
             SetKinematics(false);
         }
 
-        private void SetKinematics(bool isKinematic)
-        {
-            capsuleCollider.isTrigger = isKinematic;
-            capsuleCollider.attachedRigidbody.isKinematic = isKinematic;
+        private void SetKinematics(bool isKinematic) {
+            _capsuleCollider.isTrigger = isKinematic;
+            _capsuleCollider.attachedRigidbody.isKinematic = isKinematic;
         }
 
-        void Update ()
-        {
-            if (IsDead())
-            {
-                transform.Translate (-Vector3.up * sinkSpeed * Time.deltaTime);
-                if (transform.position.y < -10f)
-                {
-                    Destroy(this.gameObject);
-                }
+        void Update() {
+            if (!IsDead()) return;
+            
+            transform.Translate(sinkSpeed * Time.deltaTime * -Vector3.up);
+            if (transform.position.y < -10f) {
+                Destroy(gameObject);
             }
         }
 
-        public bool IsDead()
-        {
-            return (currentHealth <= 0f);
+        public bool IsDead() {
+            return _currentHealth <= 0f;
         }
 
-        public void TakeDamage (int amount, Vector3 hitPoint)
-        {
+        public void TakeDamage(int amount, Vector3 hitPoint) {
             ApplyDamage(amount);
-                
-            hitParticles.transform.position = hitPoint;
-            hitParticles.Play();
+
+            _hitParticles.transform.position = hitPoint;
+            _hitParticles.Play();
         }
 
-        public void TakeDamage(int amount)
-        {
+        public void TakeDamage(int amount) {
             ApplyDamage(amount);
         }
 
-        private void ApplyDamage(int amount)
-        {
-            if (!IsDead())
-            {
-                enemyAudio.Play();
-                currentHealth -= amount;
+        private void ApplyDamage(int amount) {
+            if (!IsDead()) {
+                _enemyAudio.Play();
+                _currentHealth -= amount;
 
-                if (IsDead())
-                {
+                if (IsDead()) {
                     Death();
                 }
-                else
-                {
-                    enemyMovement.GoToPlayer();
+                else {
+                    _enemyMovement.GoToPlayer();
                 }
             }
         }
 
-        void Death ()
-        {
-            anim.SetTrigger ("Dead");
+        void Death() {
+            _anim.SetTrigger(AnimationConstants.DeadTrigger);
 
-            enemyAudio.clip = deathClip;
-            enemyAudio.Play ();
+            _enemyAudio.clip = deathClip;
+            _enemyAudio.Play();
         }
 
-        public void StartSinking ()
-        {
-            GetComponent <UnityEngine.AI.NavMeshAgent> ().enabled = false;
+        public void StartSinking() {
+            GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
             SetKinematics(true);
 
             ScoreManager.score += scoreValue;
         }
 
-        public int CurrentHealth()
-        {
-            return currentHealth;
+        public int CurrentHealth() {
+            return _currentHealth;
         }
     }
 }

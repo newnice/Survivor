@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace Nightmare {
-    public class PlayerShooting : MonoBehaviour {
+    public class PlayerShooting : PausableObject {
         public int damagePerShot = 20;
         public float timeBetweenBullets = 0.15f;
         public float range = 100f;
@@ -36,15 +36,18 @@ namespace Nightmare {
             AdjustGrenadeStock(0);
         }
 
-        private void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             EventManager.StartListening(NightmareEvent.CollectGrenade, CollectGrenade);
         }
 
-        private void OnDisable() {
-            EventManager.RemoveListening(NightmareEvent.CollectGrenade, CollectGrenade);
+        protected override void OnDisable() {
+            base.OnDisable();
+            EventManager.StopListening(NightmareEvent.CollectGrenade, CollectGrenade);
         }
 
         void Update() {
+            if (IsPausedGame) return;
             // Add the time since Update was last called to the timer.
             timer += Time.deltaTime;
 
@@ -167,7 +170,7 @@ namespace Nightmare {
             gunLine.widthCurve = curve;
         }
 
-        public void CollectGrenade() {
+        private void CollectGrenade() {
             AdjustGrenadeStock(1);
         }
 
@@ -179,10 +182,8 @@ namespace Nightmare {
         void ShootGrenade() {
             AdjustGrenadeStock(-1);
             timer = timeBetweenBullets - grenadeFireDelay;
-            var clone = PoolManager.Pull("Grenade", transform.position, Quaternion.identity);
-
-            var grenadeClone = clone.GetComponent<Grenade>();
-            grenadeClone.Shoot(grenadeSpeed * transform.forward);
+            PoolManager.Pull("Grenade", transform.position, Quaternion.identity);
+            EventManager.TriggerEvent(NightmareEvent.ShootGrenade, grenadeSpeed * transform.forward);
         }
     }
 }

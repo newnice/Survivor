@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Nightmare;
+using UnityEngine;
 using UnityEngine.AI;
 
 [System.Serializable]
@@ -89,7 +90,7 @@ public class FaerieCircle : MonoBehaviour {
     }
 
     void OnTriggerExit(Collider coll) {
-        if (coll.CompareTag("Enemy") && coll.attachedRigidbody.isKinematic) {
+        if (coll.CompareTag(TagNames.Enemy) && coll.attachedRigidbody.isKinematic) {
             MakeAngry();
         }
     }
@@ -151,7 +152,7 @@ public class FaerieCircle : MonoBehaviour {
     }
 
     public void MakeAngry() {
-        GetComponent<Animator>().SetInteger("Anger", 11);
+        GetComponent<Animator>().SetInteger(AnimationConstants.AngerAttribute, 11);
     }
 
     private void MoveFaerie(Vector3 delta) {
