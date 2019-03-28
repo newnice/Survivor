@@ -1,31 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-namespace Nightmare
-{
-    public class GrenadeManager : MonoBehaviour
-    {
-        public static int grenades;        // The player's score.
+namespace Nightmare {
+    public class GrenadeManager : MonoBehaviour {
+        private int _grenades; // The player's score.
+        private Text _gText; // Reference to the Text component.
 
 
-        Text gText;                      // Reference to the Text component.
-
-
-        void Awake()
-        {
+        void Awake() {
             // Set up the reference.
-            gText = GetComponent<Text>();
-
+            _gText = GetComponent<Text>();
             // Reset the score.
-            grenades = 0;
+            _grenades = 0;
+        }
+
+        protected virtual void OnEnable() {
+            EventManager.StartListening(NightmareEvent.CollectGrenade, o=>IncrementGrenades());
+            EventManager.StartListening(NightmareEvent.ShootGrenade, o=>DecrementGrenades());
+        }
+
+        private void DecrementGrenades() {
+            UpdateCount(-1);
+        }
+
+        private void IncrementGrenades() {
+            UpdateCount(1);
+        }
+
+        protected virtual void OnDisable() {
+            EventManager.StopListening(NightmareEvent.CollectGrenade, o=>IncrementGrenades());
+            EventManager.StopListening(NightmareEvent.ShootGrenade, o=>DecrementGrenades());
         }
 
 
-        void Update()
-        {
-            // Set the displayed text to be the word "Score" followed by the score value.
-            gText.text = "Grenades: " + grenades;
+        private void UpdateCount(int diff) {
+            _grenades += diff;
+        }
+
+
+        void Update() {
+            _gText.text = $"Grenades: {_grenades}";
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Nightmare {
         [SerializeField] private float visionRange = 10f;
         [SerializeField] private float hearingRange = 20f;
         [SerializeField] private float wanderDistance = 10f;
-        [SerializeField] private Vector2 idleTimeRange;
+        [SerializeField] private Vector2 idleTimeRange = Vector2.zero;
         [SerializeField] [Range(0f, 1f)] private float psychicLevels = 0.2f;
         [SerializeField] private float timer = 0f;
 

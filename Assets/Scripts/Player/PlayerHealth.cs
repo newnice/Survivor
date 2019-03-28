@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.SceneManagement;
 
-namespace Nightmare
-{
-    public class PlayerHealth : MonoBehaviour
-    {
+namespace Nightmare {
+    public class PlayerHealth : MonoBehaviour {
         public int startingHealth = 100;
         public int currentHealth;
         public Slider healthSlider;
@@ -23,8 +19,7 @@ namespace Nightmare
         bool isDead;
         bool damaged;
 
-        void Awake()
-        {
+        void Awake() {
             // Setting up the references.
             anim = GetComponent<Animator>();
             playerAudio = GetComponent<AudioSource>();
@@ -34,29 +29,34 @@ namespace Nightmare
             ResetPlayer();
         }
 
-        public void ResetPlayer()
-        {
+        private void ResetPlayer() {
             // Set the initial health of the player.
             currentHealth = startingHealth;
 
             playerMovement.enabled = true;
             playerShooting.enabled = true;
 
-            anim.SetBool("IsDead", false);
+            anim.SetBool(AnimationConstants.IsDeadAttribute, false);
+            isDead = false;
+        }
+
+        private void OnEnable() {
+            EventManager.StartListening(NightmareEvent.ResetLevel, o=>ResetPlayer());
+        }
+
+        private void OnDisable() {
+            EventManager.StopListening(NightmareEvent.ResetLevel, o=>ResetPlayer());
         }
 
 
-        void Update()
-        {
+        void Update() {
             // If the player has just been damaged...
-            if (damaged)
-            {
+            if (damaged) {
                 // ... set the colour of the damageImage to the flash colour.
                 damageImage.color = flashColour;
             }
             // Otherwise...
-            else
-            {
+            else {
                 // ... transition the colour back to clear.
                 damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
             }
@@ -66,8 +66,7 @@ namespace Nightmare
         }
 
 
-        public void TakeDamage(int amount)
-        {
+        public void TakeDamage(int amount) {
             if (godMode)
                 return;
 
@@ -84,16 +83,14 @@ namespace Nightmare
             playerAudio.Play();
 
             // If the player has lost all it's health and the death flag hasn't been set yet...
-            if (currentHealth <= 0 && !isDead)
-            {
+            if (currentHealth <= 0 && !isDead) {
                 // ... it should die.
                 Death();
             }
         }
 
 
-        void Death()
-        {
+        void Death() {
             // Set the death flag so this function won't be called again.
             isDead = true;
 
@@ -101,7 +98,7 @@ namespace Nightmare
             playerShooting.DisableEffects();
 
             // Tell the animator that the player is dead.
-            anim.SetBool("IsDead", true);
+            anim.SetBool(AnimationConstants.IsDeadAttribute, true);
 
             // Set the audiosource to play the death clip and play it (this will stop the hurt sound from playing).
             playerAudio.clip = deathClip;
@@ -110,8 +107,13 @@ namespace Nightmare
             // Turn off the movement and shooting scripts.
             playerMovement.enabled = false;
             playerShooting.enabled = false;
+        }
 
-
+        /**
+         * Function for animation event after state Death completed
+         */
+        private void OnPlayerDeath() {
+            EventManager.TriggerEvent(NightmareEvent.GameOver);
         }
     }
 }

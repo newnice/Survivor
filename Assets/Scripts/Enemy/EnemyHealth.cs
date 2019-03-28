@@ -77,15 +77,20 @@ namespace Nightmare {
             _enemyAudio.Play();
         }
 
-        public void StartSinking() {
+        /**
+         * Function for animation
+         */
+        private void StartSinking() {
             GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
             SetKinematics(true);
 
-            ScoreManager.score += scoreValue;
+            EventManager.TriggerEvent(NightmareEvent.EnemyKilled, scoreValue);
         }
 
         public int CurrentHealth() {
             return _currentHealth;
         }
+        
+        
     }
 }

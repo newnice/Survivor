@@ -41,5 +41,7 @@ namespace Nightmare {
 
             Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
         }
+        
+        
     }
 }

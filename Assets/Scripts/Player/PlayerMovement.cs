@@ -9,6 +9,8 @@ namespace Nightmare {
         private Vector3 _movement; // The vector to store the direction of the player's movement.
         private Animator _anim; // Reference to the animator component.
         private Rigidbody _playerRigidbody; // Reference to the player's rigidbody.
+
+        private Vector3 _initialPosition;
 #if !MOBILE_INPUT
         private int _floorMask; // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
         private const float CamRayLength = 100f; // The length of the ray from the camera into the scene.
@@ -23,8 +25,23 @@ namespace Nightmare {
             // Set up references.
             _anim = GetComponent<Animator>();
             _playerRigidbody = GetComponent<Rigidbody>();
+            _initialPosition = transform.position;
         }
-        
+
+        protected override void OnEnable() {
+            base.OnEnable();
+            EventManager.StartListening(NightmareEvent.ResetLevel, o=>ResetPosition());
+        }
+
+        protected override void OnDisable() {
+            base.OnDisable();
+            EventManager.StopListening(NightmareEvent.ResetLevel, o=>ResetPosition());
+        }
+
+        private void ResetPosition() {
+            transform.position = _initialPosition;
+        }
+
         protected override void OnPause(bool isPaused) {
             base.OnPause(isPaused);
             _anim.enabled = !isPaused;

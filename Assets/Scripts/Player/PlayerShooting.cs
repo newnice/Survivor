@@ -20,7 +20,7 @@ namespace Nightmare {
         Light gunLight;
         public Light faceLight;
         float effectsDisplayTime = 0.2f;
-        int grenadeStock = 99;
+        int grenadeStock = 0;
 
         void Awake() {
             // Create a layer mask for the Shootable layer.
@@ -38,12 +38,12 @@ namespace Nightmare {
 
         protected override void OnEnable() {
             base.OnEnable();
-            EventManager.StartListening(NightmareEvent.CollectGrenade, CollectGrenade);
+            EventManager.StartListening(NightmareEvent.CollectGrenade, o=>CollectGrenade());
         }
 
         protected override void OnDisable() {
             base.OnDisable();
-            EventManager.StopListening(NightmareEvent.CollectGrenade, CollectGrenade);
+            EventManager.StopListening(NightmareEvent.CollectGrenade, o=>CollectGrenade());
         }
 
         void Update() {
@@ -176,7 +176,6 @@ namespace Nightmare {
 
         private void AdjustGrenadeStock(int change) {
             grenadeStock += change;
-            GrenadeManager.grenades = grenadeStock;
         }
 
         void ShootGrenade() {

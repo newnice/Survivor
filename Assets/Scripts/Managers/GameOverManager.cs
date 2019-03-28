@@ -1,32 +1,31 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 
-namespace Nightmare
-{
-    public class GameOverManager : MonoBehaviour
-    {
-        private PlayerHealth playerHealth;
-        Animator anim;
+namespace Nightmare {
+    public class GameOverManager : MonoBehaviour {
+        private Animator _anim;
 
-        private UnityEvent listener;
-
-        void Awake ()
-        {
-            playerHealth = FindObjectOfType<PlayerHealth>();
-            anim = GetComponent <Animator> ();
+        void Awake() {
+            _anim = GetComponent<Animator>();
         }
 
-        void ShowGameOver()
-        {
-            anim.SetBool("GameOver", true);
+        private void OnEnable() {
+            EventManager.StartListening(NightmareEvent.GameOver, o=>ShowGameOver());
         }
 
-        private void ResetLevel()
-        {
-            ScoreManager.score = 0;
-            anim.SetBool("GameOver", false);
-            playerHealth.ResetPlayer();
+        private void OnDestroy() {
+            EventManager.StopListening(NightmareEvent.GameOver, o=>ShowGameOver());
+        }
+
+        private void ShowGameOver() {
+            _anim.SetBool(AnimationConstants.GameOverAttribute, true);
+        }
+
+        /**
+         * Function for animation GameOverClip completed
+         */
+        private void ResetLevel() {
+            _anim.SetBool(AnimationConstants.GameOverAttribute, false);
+            EventManager.TriggerEvent(NightmareEvent.ResetLevel);
         }
     }
 }

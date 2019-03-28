@@ -33,10 +33,8 @@ namespace Nightmare {
             }
         }
 
-
-        private BaseEventManager<Vector3> _vectorManager = new BaseEventManager<Vector3>();
-        private BaseEventManager<object> _voidManager = new BaseEventManager<object>();
-        private BaseEventManager<bool> _boolManager = new BaseEventManager<bool>();
+        private BaseEventManager<object> _objectManager = new BaseEventManager<object>();
+        
         private static EventManager _manager;
         private bool _isPaused = false;
         private EventManager() { }
@@ -51,51 +49,30 @@ namespace Nightmare {
             }
         }
 
-
-        public static void StartListening(NightmareEvent eventName, UnityAction action) {
-            if (Instance == null) return;
-            Instance._voidManager.StartListening(eventName, a => action.Invoke());
-        }
-
-        public static void StartListening(NightmareEvent eventName, UnityAction<Vector3> action) {
-            if (Instance == null) return;
-            Instance._vectorManager.StartListening(eventName, action);
-        }       
         
-        public static void StartListening(NightmareEvent eventName, UnityAction<bool> action) {
+        public static void StartListening(NightmareEvent eventName, UnityAction<object> action) {
             if (Instance == null) return;
-            Instance._boolManager.StartListening(eventName, action);
+            Instance._objectManager.StartListening(eventName, action);
         }
 
-        public static void StopListening(NightmareEvent eventName, UnityAction<Vector3> action) {
+        public static void StopListening(NightmareEvent eventName, UnityAction<object> action) {
             if (Instance == null) return;
-            Instance._vectorManager.RemoveListening(eventName, action);
+            Instance._objectManager.RemoveListening(eventName, action);
         }
-
-        public static void StopListening(NightmareEvent eventName, UnityAction action) {
+     
+        public static void TriggerEvent(NightmareEvent eventName, object parameters) {
             if (Instance == null) return;
-            Instance._voidManager.RemoveListening(eventName, a => action.Invoke());
-        }
-        public static void StopListening(NightmareEvent eventName, UnityAction<bool> action) {
-            if (Instance == null) return;
-            Instance._boolManager.RemoveListening(eventName, action);
+            Instance._objectManager.TriggerEvent(eventName, parameters);
         }
 
         public static void TriggerEvent(NightmareEvent eventName) {
-            if (Instance == null) return;
-            Instance._voidManager.TriggerEvent(eventName, null);
-        }
-
-
-        public static void TriggerEvent(NightmareEvent eventName, Vector3 parameters) {
-            if (Instance == null) return;
-            Instance._vectorManager.TriggerEvent(eventName, parameters);
+            TriggerEvent(eventName, null);
         }
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 _isPaused = !_isPaused;
-                Instance._boolManager.TriggerEvent(NightmareEvent.PauseGame, _isPaused);
+                Instance._objectManager.TriggerEvent(NightmareEvent.PauseGame, _isPaused);
             }
         }
     }

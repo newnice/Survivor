@@ -33,14 +33,14 @@ namespace Nightmare {
             tr.enabled = false;
             ps.Stop();
             isPickup = true;
-            EventManager.StartListening(NightmareEvent.ShootGrenade, Shoot);
+            EventManager.StartListening(NightmareEvent.ShootGrenade, o=>Shoot((Vector3)o));
         }
 
         protected override void OnPause(bool isPaused) { }
 
         void Update() {
             if (IsPausedGame) return;
-            
+
             if (!(timer > 0f)) return;
             timer -= Time.deltaTime;
             if (timer <= 0f) {
@@ -100,7 +100,7 @@ namespace Nightmare {
             timer = -1;
             isPickup = false;
             gameObject.SetActive(false);
-            EventManager.StopListening(NightmareEvent.ShootGrenade, Shoot);
+            EventManager.StopListening(NightmareEvent.ShootGrenade, o=>Shoot((Vector3)o));
         }
     }
 }
