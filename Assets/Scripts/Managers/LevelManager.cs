@@ -8,28 +8,39 @@ namespace Nightmare {
 
         private int _currentLevel = -1;
         private Scene _currentScene;
+        private CinematicsManager _cinematics;
 
         private void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            EventManager.StartListening(NightmareEvent.LevelCompleted, o=>LoadNextLevel());
+            EventManager.StartListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
         }
 
         private void OnDisable() {
             SceneManager.sceneLoaded -= OnSceneLoaded;
-            EventManager.StopListening(NightmareEvent.LevelCompleted, o=>LoadNextLevel());
+            EventManager.StopListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
         }
 
-        private void Start() {
+        private void Awake() {
+            _cinematics = GetComponent<CinematicsManager>();
             LoadNextLevel();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             SceneManager.SetActiveScene(scene);
+            if (mode != LoadSceneMode.Additive) return;
+            
+            UnloadOldScene();
+            _currentScene = scene;
+        
+            PlayCinematics();
+        }
 
-            if (mode == LoadSceneMode.Additive) {
-                UnloadOldScene();
-                _currentScene = scene;
-            }
+        private void PlayCinematics() {
+            if (_currentLevel > 0)
+                _cinematics.PlayRealtime();
+            else
+                _cinematics.PlayStartCinematics();
+          
         }
 
         private void UnloadOldScene() {
@@ -38,14 +49,9 @@ namespace Nightmare {
         }
 
         private void LoadNextLevel() {
-            if (levelNames.Count == _currentLevel + 1) {
-                _currentLevel = 0;
-            }
-            else {
-                _currentLevel++;
-            }
-
-            SceneManager.LoadSceneAsync(levelNames[_currentLevel], LoadSceneMode.Additive);
+            _currentLevel++;
+            var levelToLoad = _currentLevel % levelNames.Count;
+            SceneManager.LoadSceneAsync(levelNames[levelToLoad], LoadSceneMode.Additive);
         }
     }
 }

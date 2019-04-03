@@ -36,7 +36,6 @@ namespace Nightmare {
         private BaseEventManager<object> _objectManager = new BaseEventManager<object>();
         
         private static EventManager _manager;
-        private bool _isPaused = false;
         private EventManager() { }
 
         private static EventManager Instance {
@@ -68,12 +67,6 @@ namespace Nightmare {
         public static void TriggerEvent(NightmareEvent eventName) {
             TriggerEvent(eventName, null);
         }
-
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                _isPaused = !_isPaused;
-                Instance._objectManager.TriggerEvent(NightmareEvent.PauseGame, _isPaused);
-            }
-        }
+        
     }
 }
