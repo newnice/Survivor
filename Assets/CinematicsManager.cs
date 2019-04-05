@@ -1,22 +1,43 @@
-﻿using Nightmare;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Video;
 
 public class CinematicsManager : MonoBehaviour {
     [SerializeField] private RealtimeCinematicPlayer realtimePlayer = null;
+    [SerializeField] private Canvas canvas = null;
+    private PauseManager _pauseManager;
+    private VideoPlayer _videoPlayer;
 
+    private void Awake() {
+        _videoPlayer = GetComponent<VideoPlayer>();
+        _videoPlayer.loopPointReached += o => OnStopCinematics();
+        _pauseManager = FindObjectOfType<PauseManager>();
+    }
 
     public void PlayRealtime() {
-        EventManager.TriggerEvent(NightmareEvent.PauseGame, true);
-        realtimePlayer.StartPlay(o => EventManager.TriggerEvent(NightmareEvent.PauseGame, false));
+        OnStartCinematics();
+        realtimePlayer.StartPlay(o=>_pauseManager.ResumeObjects());
+    }
+
+    private void OnStopCinematics() {
+        _pauseManager.ResumeObjects();
+        canvas.enabled = true;
+    }
+
+    private void OnStartCinematics() {
+        canvas.enabled = false;
+        _pauseManager.PauseObjects();
     }
 
     protected virtual void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            realtimePlayer.StopPlay();
-        }
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
+
+        realtimePlayer.StopPlay();
+        _videoPlayer.Stop();
+        canvas.enabled = true;
     }
 
     public void PlayStartCinematics() {
-        Debug.Log("start prerendered cinematics");
+        OnStartCinematics();
+        _videoPlayer.Play();
     }
 }

@@ -20,18 +20,18 @@ namespace Nightmare {
             EventManager.StopListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
         }
 
-        private void Awake() {
-            _cinematics = GetComponent<CinematicsManager>();
+        private void Start() {
+            _cinematics = GetComponentInChildren<CinematicsManager>();
             LoadNextLevel();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             SceneManager.SetActiveScene(scene);
             if (mode != LoadSceneMode.Additive) return;
-            
+
             UnloadOldScene();
             _currentScene = scene;
-        
+
             PlayCinematics();
         }
 
@@ -40,7 +40,6 @@ namespace Nightmare {
                 _cinematics.PlayRealtime();
             else
                 _cinematics.PlayStartCinematics();
-          
         }
 
         private void UnloadOldScene() {

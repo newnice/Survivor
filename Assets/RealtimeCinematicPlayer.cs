@@ -23,8 +23,8 @@ public class RealtimeCinematicPlayer : MonoBehaviour {
         _cinematicCamera.Priority = 10;
     }
 
-    public void StartPlay(Action<PlayableDirector> onStopPlay) {
-        _director.stopped += onStopPlay;
+    public void StartPlay(Action<PlayableDirector> onStopCinematic) {
+        _director.stopped +=  onStopCinematic;
         _director.Play();
     }
 

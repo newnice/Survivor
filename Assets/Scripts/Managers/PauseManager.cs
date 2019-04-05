@@ -9,14 +9,10 @@ using UnityEditor;
 public class PauseManager : MonoBehaviour {
     [SerializeField] private AudioMixerSnapshot paused = null;
     [SerializeField] private AudioMixerSnapshot unpaused = null;
+    [SerializeField] private Canvas mainCanvas = null;
+    [SerializeField] private Canvas pausedCanvas = null;
 
     private bool _isPaused;
-    private Canvas canvas;
-
-    private void Start() {
-        canvas = GetComponent<Canvas>();
-    }
-
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space)) {
@@ -25,12 +21,24 @@ public class PauseManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            canvas.enabled = !canvas.enabled;
-            Pause();
+            mainCanvas.enabled = !_isPaused;
+            pausedCanvas.enabled = _isPaused;
+            PauseGame();
         }
     }
 
-    private void Pause() {
+
+    public void PauseObjects() {
+        _isPaused = true;
+        EventManager.TriggerEvent(NightmareEvent.PauseGame, true);
+    }
+
+    public void ResumeObjects() {
+        _isPaused = false;
+        EventManager.TriggerEvent(NightmareEvent.PauseGame, false);
+    }
+
+    private void PauseGame() {
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         Lowpass();
     }
