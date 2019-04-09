@@ -39,11 +39,17 @@ namespace Nightmare {
         protected override void OnEnable() {
             base.OnEnable();
             EventManager.StartListening(NightmareEvent.CollectGrenade, o=>CollectGrenade());
+            EventManager.StartListening(NightmareEvent.RestartGame, o=> ResetGrenades());
+        }
+
+        private void ResetGrenades() {
+            grenadeStock = 0;
         }
 
         protected override void OnDisable() {
             base.OnDisable();
             EventManager.StopListening(NightmareEvent.CollectGrenade, o=>CollectGrenade());
+            EventManager.StopListening(NightmareEvent.RestartGame, o=> ResetGrenades());
         }
 
         void Update() {

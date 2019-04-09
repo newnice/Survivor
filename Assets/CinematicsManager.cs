@@ -9,13 +9,16 @@ public class CinematicsManager : MonoBehaviour {
 
     private void Awake() {
         _videoPlayer = GetComponent<VideoPlayer>();
-        _videoPlayer.loopPointReached += o => OnStopCinematics();
+        _videoPlayer.loopPointReached += o => {
+            OnStopCinematics();
+            _videoPlayer.Stop();
+        };
         _pauseManager = FindObjectOfType<PauseManager>();
     }
 
     public void PlayRealtime() {
-        OnStartCinematics();
-        realtimePlayer.StartPlay(o=>_pauseManager.ResumeObjects());
+        OnStartCinematics(false);
+        realtimePlayer.StartPlay(o=>OnStopCinematics());
     }
 
     private void OnStopCinematics() {
@@ -23,9 +26,9 @@ public class CinematicsManager : MonoBehaviour {
         canvas.enabled = true;
     }
 
-    private void OnStartCinematics() {
+    private void OnStartCinematics(bool isPauseMusic) {
         canvas.enabled = false;
-        _pauseManager.PauseObjects();
+        _pauseManager.PauseObjects(isPauseMusic);
     }
 
     protected virtual void Update() {
@@ -37,7 +40,7 @@ public class CinematicsManager : MonoBehaviour {
     }
 
     public void PlayStartCinematics() {
-        OnStartCinematics();
+        OnStartCinematics(true);
         _videoPlayer.Play();
     }
 }

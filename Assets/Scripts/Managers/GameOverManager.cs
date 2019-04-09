@@ -23,9 +23,9 @@ namespace Nightmare {
         /**
          * Function for animation GameOverClip completed
          */
-        private void ResetLevel() {
+        private void RestartGame() {
             _anim.SetBool(AnimationConstants.GameOverAttribute, false);
-            EventManager.TriggerEvent(NightmareEvent.ResetLevel);
+            EventManager.TriggerEvent(NightmareEvent.RestartGame);
         }
     }
 }

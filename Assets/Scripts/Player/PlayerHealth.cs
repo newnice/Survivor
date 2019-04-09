@@ -10,7 +10,7 @@ namespace Nightmare {
         public AudioClip deathClip;
         public float flashSpeed = 5f;
         public Color flashColour = new Color(1f, 0f, 0f, 0.1f);
-        public bool godMode = false;
+        public bool godMode;
 
         Animator anim;
         AudioSource playerAudio;
@@ -32,7 +32,8 @@ namespace Nightmare {
         private void ResetPlayer() {
             // Set the initial health of the player.
             currentHealth = startingHealth;
-
+            healthSlider.value = currentHealth;
+            
             playerMovement.enabled = true;
             playerShooting.enabled = true;
 
@@ -41,11 +42,11 @@ namespace Nightmare {
         }
 
         private void OnEnable() {
-            EventManager.StartListening(NightmareEvent.ResetLevel, o=>ResetPlayer());
+            EventManager.StartListening(NightmareEvent.RestartGame, o=>ResetPlayer());
         }
 
         private void OnDisable() {
-            EventManager.StopListening(NightmareEvent.ResetLevel, o=>ResetPlayer());
+            EventManager.StopListening(NightmareEvent.RestartGame, o=>ResetPlayer());
         }
 
 

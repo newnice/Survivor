@@ -13,11 +13,13 @@ namespace Nightmare {
         private void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
             EventManager.StartListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
+            EventManager.StartListening(NightmareEvent.RestartGame, o=>LoadLevel(0));
         }
 
         private void OnDisable() {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             EventManager.StopListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
+            EventManager.StopListening(NightmareEvent.RestartGame, o => LoadLevel(0));
         }
 
         private void Awake() {
@@ -48,6 +50,11 @@ namespace Nightmare {
         private void UnloadOldScene() {
             if (_currentScene != null && _currentScene.IsValid())
                 SceneManager.UnloadSceneAsync(_currentScene);
+        }
+
+        private void LoadLevel(int level) {
+            _currentLevel = level - 1;
+            LoadNextLevel();
         }
 
         private void LoadNextLevel() {
