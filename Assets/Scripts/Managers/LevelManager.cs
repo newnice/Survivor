@@ -20,8 +20,11 @@ namespace Nightmare {
             EventManager.StopListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
         }
 
-        private void Start() {
+        private void Awake() {
             _cinematics = GetComponentInChildren<CinematicsManager>();
+        }
+
+        private void Start() {
             LoadNextLevel();
         }
 

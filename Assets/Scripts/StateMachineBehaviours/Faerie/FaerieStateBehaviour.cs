@@ -1,30 +1,27 @@
-﻿using UnityEngine;
+﻿using Nightmare;
+using UnityEngine;
 
-public class FaerieStateBehaviour : StateMachineBehaviour
-{
+public class FaerieStateBehaviour : StateMachineBehaviour {
     internal FaerieCircle faerieCircle;
-    internal float angerTimer = 0f;
+    internal float angerTimer;
     public int nextState;
+    internal FaerieAnger faerieAnger;
 
-    public void Setup(FaerieCircle fc)
-    {
+    public void Setup(FaerieCircle fc, FaerieAnger fa) {
         faerieCircle = fc;
+        faerieAnger = fa;
     }
 
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         ProcessAnger(animator);
     }
 
-    private void ProcessAnger(Animator animator)
-    {
-        if (angerTimer > 0f)
-        {
-            angerTimer -= Time.deltaTime;
-            if (angerTimer <= 0f)
-            {
-                animator.SetInteger("Anger", nextState);
-            }
+    private void ProcessAnger(Animator animator) {
+        if (angerTimer <= 0f) return;
+        
+        angerTimer -= Time.deltaTime;
+        if (angerTimer <= 0f) {
+            animator.SetInteger(AnimationConstants.AngerAttribute, nextState);
         }
     }
 }

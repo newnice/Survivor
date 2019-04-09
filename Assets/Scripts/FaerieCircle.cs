@@ -47,10 +47,11 @@ public class FaerieCircle : MonoBehaviour {
     }
 
     private void SetupStateBehaviours() {
+        var fa = FindObjectOfType<FaerieAnger>();
         var anim = gameObject.GetComponent<Animator>();
         var stateBehaviours = anim.GetBehaviours<FaerieStateBehaviour>();
         foreach (var state in stateBehaviours) {
-            state.Setup(this);
+            state.Setup(this, fa);
         }
     }
 
@@ -151,7 +152,7 @@ public class FaerieCircle : MonoBehaviour {
         PoolManager.Pull("Grenade", transform.position, Quaternion.identity);
     }
 
-    public void MakeAngry() {
+    private void MakeAngry() {
         GetComponent<Animator>().SetInteger(AnimationConstants.AngerAttribute, 11);
     }
 
