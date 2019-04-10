@@ -16,7 +16,7 @@ public class PauseManager : MonoBehaviour {
     private bool _isPaused;
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             _isPaused = !_isPaused;
             if (_isPaused)
                 PauseObjects(false);
@@ -25,9 +25,7 @@ public class PauseManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            mainCanvas.enabled = !_isPaused;
-            pausedCanvas.enabled = _isPaused;
-            PauseGame();
+            PauseGame(!_isPaused);
         }
     }
 
@@ -48,9 +46,16 @@ public class PauseManager : MonoBehaviour {
     /**
      * Invoked by UI Pause button
      */
-    public void PauseGame() {
+    private void PauseGame() {
+        mainCanvas.enabled = !_isPaused;
+        pausedCanvas.enabled = _isPaused;
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         Lowpass();
+    }
+
+    public void PauseGame(bool isPause) {
+        _isPaused = isPause;
+        PauseGame();
     }
 
     private void Lowpass() {
