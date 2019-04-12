@@ -13,32 +13,32 @@ public class PauseManager : MonoBehaviour {
     [SerializeField] private Canvas pausedCanvas = null;
     [SerializeField] private AudioSource musicSource = null;
 
-    private bool _isPaused;
+    public bool _isPausedObjects, _isPausedGame;
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            _isPaused = !_isPaused;
-            if (_isPaused)
+        if (Input.GetKeyDown(KeyCode.Space) && !_isPausedGame) {
+            _isPausedObjects = !_isPausedObjects;
+            if (_isPausedObjects)
                 PauseObjects(false);
             else
                 ResumeObjects();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            PauseGame(!_isPaused);
+        if (Input.GetKeyDown(KeyCode.Escape)&& !_isPausedObjects) {
+            PauseGame(!_isPausedGame);
         }
     }
 
 
     public void PauseObjects(bool isStopMusic) {
-        _isPaused = true;
-        EventManager.TriggerEvent(NightmareEvent.PauseGame, true);
+        _isPausedObjects = true;
+        EventManager.TriggerEvent(NightmareEvent.PauseObjects, true);
         musicSource.enabled = !isStopMusic;
     }
 
     public void ResumeObjects() {
-        _isPaused = false;
-        EventManager.TriggerEvent(NightmareEvent.PauseGame, false);
+        _isPausedObjects = false;
+        EventManager.TriggerEvent(NightmareEvent.PauseObjects, false);
         musicSource.enabled = true;
     }
 
@@ -47,14 +47,14 @@ public class PauseManager : MonoBehaviour {
      * Invoked by UI Pause button
      */
     private void PauseGame() {
-        mainCanvas.enabled = !_isPaused;
-        pausedCanvas.enabled = _isPaused;
+        mainCanvas.enabled = !_isPausedGame;
+        pausedCanvas.enabled = _isPausedGame;
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         Lowpass();
     }
 
     public void PauseGame(bool isPause) {
-        _isPaused = isPause;
+        _isPausedGame = isPause;
         PauseGame();
     }
 

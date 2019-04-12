@@ -32,7 +32,7 @@ namespace Nightmare {
         private void UpdateScore(int value) {
             _score += value;
             if (_score >= _maxLevelScore) {
-                _maxLevelScore += scoreStepToCompleteLevel;
+                _maxLevelScore = _score+scoreStepToCompleteLevel;
                 EventManager.TriggerEvent(NightmareEvent.LevelCompleted, null);
             }
         }

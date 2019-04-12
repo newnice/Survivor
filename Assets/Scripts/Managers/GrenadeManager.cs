@@ -17,7 +17,7 @@ namespace Nightmare {
         protected virtual void OnEnable() {
             EventManager.StartListening(NightmareEvent.CollectGrenade, o=>IncrementGrenades());
             EventManager.StartListening(NightmareEvent.ShootGrenade, o=>DecrementGrenades());
-            EventManager.StartListening(NightmareEvent.RestartGame, o=>UpdateCount(-_grenades));
+            EventManager.StartListening(NightmareEvent.GameOver, o=>UpdateCount(-_grenades));
         }
 
         private void DecrementGrenades() {
@@ -31,7 +31,7 @@ namespace Nightmare {
         protected virtual void OnDisable() {
             EventManager.StopListening(NightmareEvent.CollectGrenade, o=>IncrementGrenades());
             EventManager.StopListening(NightmareEvent.ShootGrenade, o=>DecrementGrenades());
-            EventManager.StopListening(NightmareEvent.RestartGame, o=>UpdateCount(-_grenades));
+            EventManager.StopListening(NightmareEvent.GameOver, o=>UpdateCount(-_grenades));
         }
 
 

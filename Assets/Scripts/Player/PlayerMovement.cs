@@ -30,12 +30,12 @@ namespace Nightmare {
 
         protected override void OnEnable() {
             base.OnEnable();
-            EventManager.StartListening(NightmareEvent.RestartGame, o=>ResetPosition());
+            EventManager.StartListening(NightmareEvent.GameOver, o=>ResetPosition());
         }
 
         protected override void OnDisable() {
             base.OnDisable();
-            EventManager.StopListening(NightmareEvent.RestartGame, o=>ResetPosition());
+            EventManager.StopListening(NightmareEvent.GameOver, o=>ResetPosition());
         }
 
         private void ResetPosition() {

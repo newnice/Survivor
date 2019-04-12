@@ -5,7 +5,7 @@ namespace Nightmare {
         private bool _isPaused;
         protected bool IsPausedGame => _isPaused;
         protected virtual void OnEnable() {
-            EventManager.StartListening(NightmareEvent.PauseGame, i=>OnPause((bool)i));
+            EventManager.StartListening(NightmareEvent.PauseObjects, i=>OnPause((bool)i));
         }
 
         protected virtual void OnPause(bool isPaused) {
@@ -13,7 +13,7 @@ namespace Nightmare {
         }
         
         protected virtual void OnDisable() {
-            EventManager.StopListening(NightmareEvent.PauseGame, i=>OnPause((bool)i));
+            EventManager.StopListening(NightmareEvent.PauseObjects, i=>OnPause((bool)i));
         }
     }
 }

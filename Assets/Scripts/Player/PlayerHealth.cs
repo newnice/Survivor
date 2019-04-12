@@ -30,6 +30,8 @@ namespace Nightmare {
         }
 
         private void ResetPlayer() {
+            anim.SetBool(AnimationConstants.IsDeadAttribute, false);
+            isDead = false;
             // Set the initial health of the player.
             currentHealth = startingHealth;
             healthSlider.value = currentHealth;
@@ -37,16 +39,7 @@ namespace Nightmare {
             playerMovement.enabled = true;
             playerShooting.enabled = true;
 
-            anim.SetBool(AnimationConstants.IsDeadAttribute, false);
-            isDead = false;
-        }
 
-        private void OnEnable() {
-            EventManager.StartListening(NightmareEvent.RestartGame, o=>ResetPlayer());
-        }
-
-        private void OnDisable() {
-            EventManager.StopListening(NightmareEvent.RestartGame, o=>ResetPlayer());
         }
 
 
@@ -115,6 +108,7 @@ namespace Nightmare {
          */
         private void OnPlayerDeath() {
             EventManager.TriggerEvent(NightmareEvent.GameOver);
+            ResetPlayer();
         }
     }
 }
