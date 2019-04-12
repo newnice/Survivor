@@ -13,7 +13,7 @@ namespace Nightmare {
         private void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
             EventManager.StartListening(NightmareEvent.LevelCompleted, o => LoadNextLevel());
-            EventManager.StartListening(NightmareEvent.RestartGame, o=>LoadLevel(0));
+            EventManager.StartListening(NightmareEvent.RestartGame, o => LoadLevel(0));
         }
 
         private void OnDisable() {
@@ -43,8 +43,6 @@ namespace Nightmare {
         private void PlayCinematics() {
             if (_currentLevel > 0)
                 _cinematics.PlayRealtime();
-            else
-                _cinematics.PlayStartCinematics();
         }
 
         private void UnloadOldScene() {

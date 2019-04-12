@@ -31,4 +31,8 @@ public class RealtimeCinematicPlayer : MonoBehaviour {
     public void StopPlay() {
         _director.Stop();
     }
+
+    public bool IsPlaying() {
+        return _director.state == PlayState.Playing;
+    }
 }
