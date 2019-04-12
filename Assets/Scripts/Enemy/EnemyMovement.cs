@@ -33,6 +33,12 @@ namespace Nightmare {
             ScaleVision(1f);
             IsPsychic();
             timer = 0f;
+            EventManager.StartListening(NightmareEvent.GrenadeExploded, grenadePos=>HearPoint((Vector3) grenadePos));
+        }
+
+        protected override void OnDisable() {
+            base.OnDisable();
+            EventManager.StopListening(NightmareEvent.GrenadeExploded, grenadePos=>HearPoint((Vector3) grenadePos));
         }
 
         protected override void OnPause(bool isPaused) {
@@ -133,14 +139,5 @@ namespace Nightmare {
 
             return navHit.mask;
         }
-
-        //void OnDrawGizmos()
-        //{
-        //    Vector3 position = this.transform.position;
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawWireSphere(position, currentVision);
-        //    Gizmos.color = Color.yellow;
-        //    Gizmos.DrawWireSphere(position, hearingRange);
-        //}
     }
 }

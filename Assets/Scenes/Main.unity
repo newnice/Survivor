@@ -2924,7 +2924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f43bf66218c874d871d02802b6a2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreStepToCompleteLevel: 100
+  scoreStepToCompleteLevel: 1000
 --- !u!1 &1575011243
 GameObject:
   m_ObjectHideFlags: 0

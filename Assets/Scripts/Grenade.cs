@@ -36,8 +36,6 @@ namespace Nightmare {
             EventManager.StartListening(NightmareEvent.ShootGrenade, o=>Shoot((Vector3)o));
         }
 
-        protected override void OnPause(bool isPaused) { }
-
         void Update() {
             if (IsPausedGame) return;
 
@@ -87,8 +85,8 @@ namespace Nightmare {
                     victim.TakeDamage(explosiveDamage);
                 }
             }
-
             StartCoroutine("TimedDisable");
+            EventManager.TriggerEvent(NightmareEvent.GrenadeExploded, transform.position);
         }
 
         private IEnumerator TimedDisable() {
