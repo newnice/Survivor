@@ -33,7 +33,7 @@ namespace Nightmare {
             _score += value;
             if (_score >= _maxLevelScore) {
                 _maxLevelScore = _score+scoreStepToCompleteLevel;
-                EventManager.TriggerEvent(NightmareEvent.LevelCompleted, null);
+                EventManager.TriggerEvent(NightmareEvent.LevelCompleted, _score);
             }
         }
 

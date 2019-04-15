@@ -29,6 +29,19 @@ namespace Nightmare {
             ResetPlayer();
         }
 
+        protected virtual  void OnEnable() {
+            EventManager.StartListening(NightmareEvent.LevelCompleted, score=>CelebrateLevelComplete((int) score));
+        }
+
+        private void OnDisable() {
+            EventManager.StopListening(NightmareEvent.LevelCompleted, score=>CelebrateLevelComplete((int) score));
+        }
+
+        private void CelebrateLevelComplete(int currentScore) {
+            anim.SetInteger(AnimationConstants.CurrentScoreAttribute, currentScore);
+            anim.SetTrigger(AnimationConstants.LevelCompleteTrigger);
+        }
+        
         private void ResetPlayer() {
             anim.SetBool(AnimationConstants.IsDeadAttribute, false);
             isDead = false;

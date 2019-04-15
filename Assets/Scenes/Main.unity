@@ -2924,7 +2924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f43bf66218c874d871d02802b6a2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreStepToCompleteLevel: 1000
+  scoreStepToCompleteLevel: 200
 --- !u!1 &1575011243
 GameObject:
   m_ObjectHideFlags: 0
@@ -3066,7 +3066,7 @@ PrefabInstance:
       objectReference: {fileID: 1394906873}
     - target: {fileID: 11400004, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
       propertyPath: godMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8200000, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
       propertyPath: panLevelCustomCurve.m_RotationOrder

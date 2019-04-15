@@ -10,14 +10,12 @@ namespace Nightmare {
         private int _currentHealth;
         private Animator _anim;
         private AudioSource _enemyAudio;
-        private ParticleSystem _hitParticles;
         private CapsuleCollider _capsuleCollider;
         private EnemyMovement _enemyMovement;
 
         void Awake() {
             _anim = GetComponent<Animator>();
             _enemyAudio = GetComponent<AudioSource>();
-            _hitParticles = GetComponentInChildren<ParticleSystem>();
             _capsuleCollider = GetComponent<CapsuleCollider>();
             _enemyMovement = GetComponent<EnemyMovement>();
         }
@@ -43,13 +41,6 @@ namespace Nightmare {
 
         public bool IsDead() {
             return _currentHealth <= 0f;
-        }
-
-        public void TakeDamage(int amount, Vector3 hitPoint) {
-            ApplyDamage(amount);
-
-            _hitParticles.transform.position = hitPoint;
-            _hitParticles.Play();
         }
 
         public void TakeDamage(int amount) {

@@ -130,7 +130,7 @@ namespace Nightmare {
                 // If the EnemyHealth component exist...
                 if (enemyHealth != null) {
                     // ... the enemy should take damage.
-                    enemyHealth.TakeDamage(damagePerShot, shootHit.point);
+                    enemyHealth.TakeDamage(damagePerShot);
                 }
 
                 // Set the second position of the line renderer to the point the raycast hit.
