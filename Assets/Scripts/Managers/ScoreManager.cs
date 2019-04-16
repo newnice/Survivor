@@ -21,12 +21,12 @@ namespace Nightmare {
 
         private void OnEnable() {
             EventManager.StartListening(NightmareEvent.GameOver, o=>ResetScore());
-            EventManager.StartListening(NightmareEvent.EnemyKilled, s=>UpdateScore((int) s));
+            EventManager.StartListening(NightmareEvent.EnemyKilled, s=>UpdateScore(((EnemyHealth) s).scoreValue));
         }
 
         private void OnDestroy() {
             EventManager.StopListening(NightmareEvent.GameOver, o=>ResetScore());
-            EventManager.StopListening(NightmareEvent.EnemyKilled, s=>UpdateScore((int) s));
+            EventManager.StopListening(NightmareEvent.EnemyKilled, s=>UpdateScore(((EnemyHealth) s).scoreValue));
         }
 
         private void UpdateScore(int value) {

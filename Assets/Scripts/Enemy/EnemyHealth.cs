@@ -48,16 +48,16 @@ namespace Nightmare {
         }
 
         private void ApplyDamage(int amount) {
-            if (!IsDead()) {
-                _enemyAudio.Play();
-                _currentHealth -= amount;
+            if (IsDead()) return;
+            
+            _enemyAudio.Play();
+            _currentHealth -= amount;
 
-                if (IsDead()) {
-                    Death();
-                }
-                else {
-                    _enemyMovement.GoToPlayer();
-                }
+            if (IsDead()) {
+                Death();
+            }
+            else {
+                _enemyMovement.GoToPlayer();
             }
         }
 
@@ -69,13 +69,13 @@ namespace Nightmare {
         }
 
         /**
-         * Function for animation
+         * Function for animation event before enemy dead
          */
         private void StartSinking() {
             GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
             SetKinematics(true);
 
-            EventManager.TriggerEvent(NightmareEvent.EnemyKilled, scoreValue);
+            EventManager.TriggerEvent(NightmareEvent.EnemyKilled, this);
         }
 
         public int CurrentHealth() {

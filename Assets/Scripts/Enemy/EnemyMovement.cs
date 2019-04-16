@@ -33,13 +33,16 @@ namespace Nightmare {
             ScaleVision(1f);
             IsPsychic();
             timer = 0f;
-            EventManager.StartListening(NightmareEvent.GrenadeExploded, grenadePos=>HearPoint((Vector3) grenadePos));
+            EventManager.StartListening(NightmareEvent.GrenadeExploded, grenadePos => HearPoint((Vector3) grenadePos));
+            EventManager.StartListening(NightmareEvent.EnemyKilled, obj => HearDeathPoint((EnemyHealth) obj));
         }
 
         protected override void OnDisable() {
             base.OnDisable();
-            EventManager.StopListening(NightmareEvent.GrenadeExploded, grenadePos=>HearPoint((Vector3) grenadePos));
+            EventManager.StopListening(NightmareEvent.GrenadeExploded, grenadePos => HearPoint((Vector3) grenadePos));
+            EventManager.StopListening(NightmareEvent.EnemyKilled, obj => HearDeathPoint((EnemyHealth) obj));
         }
+
 
         protected override void OnPause(bool isPaused) {
             base.OnPause(isPaused);
@@ -74,6 +77,11 @@ namespace Nightmare {
 
         private void HearPoint(Vector3 position) {
             TestSense(position, hearingRange);
+        }
+
+        private void HearDeathPoint(EnemyHealth killedEnemy) {
+            if (killedEnemy == _enemyHealth) return;
+            TestSense(killedEnemy.transform.position, hearingRange);
         }
 
         private void TestSense(Vector3 position, float senseRange) {
