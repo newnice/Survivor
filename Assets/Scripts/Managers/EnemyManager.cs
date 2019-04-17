@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Nightmare {
+    
     public class EnemyManager : PausableObject {
         private PlayerHealth _playerHealth;
         public GameObject enemy;
@@ -39,7 +40,8 @@ namespace Nightmare {
 
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
 
-            Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+            var enemyClone = Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+            enemyClone.transform.parent = transform;
         }
         
         
