@@ -561,9 +561,7 @@ Transform:
   m_Children:
   - {fileID: 1434239555}
   - {fileID: 2112317438}
-  - {fileID: 345275349}
-  - {fileID: 1725468539}
-  - {fileID: 933997770}
+  - {fileID: 1979408305}
   - {fileID: 376845198}
   - {fileID: 1577804405}
   - {fileID: 189801764}
@@ -776,7 +774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 345275349}
   m_Layer: 0
-  m_Name: ZomBunnySpawnPoint
+  m_Name: SpawnPoint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -793,8 +791,8 @@ Transform:
   m_LocalPosition: {x: -18.98753, y: -1.9276284, z: 12.225985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 183304858}
-  m_RootOrder: 2
+  m_Father: {fileID: 1979408305}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &376845198 stripped
 Transform:
@@ -1609,7 +1607,6 @@ GameObject:
   m_Component:
   - component: {fileID: 611915178}
   - component: {fileID: 611915177}
-  - component: {fileID: 611915176}
   - component: {fileID: 611915175}
   m_Layer: 0
   m_Name: EnemyManager
@@ -1627,33 +1624,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 611915174}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb4291fd5d37862448290bf2de777045, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e8b0ee512cbdf947aa46e044aaada96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
-  spawnTime: 6.5
-  spawnPoints:
-  - {fileID: 345275349}
-  - {fileID: 1725468539}
-  - {fileID: 933997770}
---- !u!114 &611915176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611915174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb4291fd5d37862448290bf2de777045, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
-  spawnTime: 3.3
-  spawnPoints:
-  - {fileID: 345275349}
-  - {fileID: 1725468539}
-  - {fileID: 933997770}
+  pools:
+  - key: ZomBunny
+    poolObject: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
+    size: 20
+    parentingGroup: {fileID: 611915178}
+    expandable: 1
+  - key: ZomBear
+    poolObject: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
+    size: 10
+    parentingGroup: {fileID: 611915178}
+    expandable: 1
+  - key: Hellephant
+    poolObject: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
+    size: 5
+    parentingGroup: {fileID: 611915178}
+    expandable: 1
 --- !u!114 &611915177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1666,12 +1655,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4291fd5d37862448290bf2de777045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
-  spawnTime: 1.6
+  maxEnemyCount: 100
+  broadcastProbability: 0.1
+  spawnConfig:
+  - enemyPrefab: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
+    spawnTime: 3
+  - enemyPrefab: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
+    spawnTime: 6.5
+  - enemyPrefab: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
+    spawnTime: 13
   spawnPoints:
   - {fileID: 345275349}
   - {fileID: 1725468539}
   - {fileID: 933997770}
+  _enemyCount: 0
 --- !u!4 &611915178
 Transform:
   m_ObjectHideFlags: 0
@@ -1854,7 +1851,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4409721230505074, guid: bfc27685a8b39124baf31b73cb9b0583, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 23077540518221368, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -2023,7 +2020,7 @@ PrefabInstance:
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
       propertyPath: angryFaerie.areaCost
-      value: 64
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -2257,7 +2254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4198949049640688, guid: 75bdc346099e2ff4ba096f354b190b34, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75bdc346099e2ff4ba096f354b190b34, type: 3}
@@ -2558,7 +2555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 933997770}
   m_Layer: 0
-  m_Name: HellephantSpawnPoint
+  m_Name: SpawnPoint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2575,8 +2572,8 @@ Transform:
   m_LocalPosition: {x: 1.5124696, y: -1.9276284, z: 31.725985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 183304858}
-  m_RootOrder: 4
+  m_Father: {fileID: 1979408305}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &943920582
 GameObject:
@@ -2983,7 +2980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4409721230505074, guid: bfc27685a8b39124baf31b73cb9b0583, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -3138,7 +3135,7 @@ PrefabInstance:
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
       propertyPath: angryFaerie.areaCost
-      value: 64
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -4346,7 +4343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1725468539}
   m_Layer: 0
-  m_Name: ZomBearSpawnPoint
+  m_Name: SpawnPoint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4363,8 +4360,8 @@ Transform:
   m_LocalPosition: {x: 24.01247, y: -1.9276284, z: 14.725985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 183304858}
-  m_RootOrder: 3
+  m_Father: {fileID: 1979408305}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1750139933
 PrefabInstance:
@@ -4407,7 +4404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4409721230505074, guid: bfc27685a8b39124baf31b73cb9b0583, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 23077540518221368, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -4576,7 +4573,7 @@ PrefabInstance:
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
       propertyPath: angryFaerie.areaCost
-      value: 64
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -5692,6 +5689,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978917666}
   m_Mesh: {fileID: 4300002, guid: 9f185e9167e4f99489912e1b6d9899bf, type: 3}
+--- !u!1 &1979408304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1979408305}
+  m_Layer: 0
+  m_Name: SpawnPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1979408305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979408304}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 345275349}
+  - {fileID: 1725468539}
+  - {fileID: 933997770}
+  m_Father: {fileID: 183304858}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2038962321
 GameObject:
   m_ObjectHideFlags: 0

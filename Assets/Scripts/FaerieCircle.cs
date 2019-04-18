@@ -18,11 +18,10 @@ public struct FaerieMood {
 public class FaerieCircle : MonoBehaviour {
     public FaerieMood happyFaerie;
     public FaerieMood angryFaerie;
-
+    [SerializeField] private int grenadeStock = 1;
+    [SerializeField] private float cullRadius = 5f;
+    
     private float faerieSpeed;
-    public int grenadeStock = 1;
-    public float cullRadius = 5f;
-
     private float radius = 1f;
     private ParticleSystem faerieParticles;
     private ParticleSystem circleParticles;
@@ -149,7 +148,7 @@ public class FaerieCircle : MonoBehaviour {
         }
 
         remainingGrenades--;
-        PoolManager.Pull("Grenade", transform.position, Quaternion.identity);
+        PoolManager.SharedInstance.Pull("Grenade", transform.position, Quaternion.identity);
     }
 
     private void MakeAngry() {

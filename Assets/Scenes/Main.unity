@@ -2386,8 +2386,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1222083999}
+  - component: {fileID: 1222084000}
   m_Layer: 0
-  m_Name: Grenades
+  m_Name: GrenadesPoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2407,6 +2408,25 @@ Transform:
   m_Father: {fileID: 1796129603}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1222084000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222083998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8b0ee512cbdf947aa46e044aaada96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - key: Grenade
+    poolObject: {fileID: 1105787354104060, guid: 41a4c48eef428174cb5039adb608d30c,
+      type: 3}
+    size: 10
+    parentingGroup: {fileID: 1222083999}
+    expandable: 1
 --- !u!1 &1262351022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,7 +2967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f43bf66218c874d871d02802b6a2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreStepToCompleteLevel: 200
+  scoreStepToCompleteLevel: 1000
 --- !u!1 &1575011243
 GameObject:
   m_ObjectHideFlags: 0
@@ -3111,6 +3131,10 @@ PrefabInstance:
       propertyPath: range
       value: 68
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
+      propertyPath: poolManager
+      value: 
+      objectReference: {fileID: 1222084000}
     - target: {fileID: 8200002, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -3501,7 +3525,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1796129603}
-  - component: {fileID: 1796129605}
   - component: {fileID: 1796129602}
   - component: {fileID: 1796129604}
   m_Layer: 0
@@ -3556,25 +3579,6 @@ MonoBehaviour:
   levelNames:
   - Level1
   - Level2
---- !u!114 &1796129605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796129601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8b0ee512cbdf947aa46e044aaada96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pools:
-  - key: Grenade
-    poolObject: {fileID: 1105787354104060, guid: 41a4c48eef428174cb5039adb608d30c,
-      type: 3}
-    size: 10
-    parentingGroup: {fileID: 1222083999}
-    expandable: 1
 --- !u!1 &1837071935
 GameObject:
   m_ObjectHideFlags: 0

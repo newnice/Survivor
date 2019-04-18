@@ -35,7 +35,7 @@ namespace Nightmare {
             
             transform.Translate(sinkSpeed * Time.deltaTime * -Vector3.up);
             if (transform.position.y < -10f) {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
 

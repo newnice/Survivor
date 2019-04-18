@@ -86,7 +86,7 @@ namespace Nightmare {
                 }
             }
             StartCoroutine("TimedDisable");
-            EventManager.TriggerEvent(NightmareEvent.GrenadeExploded, transform.position);
+            EventManager.TriggerEvent(NightmareEvent.NoisePropagated, transform.position);
         }
 
         private IEnumerator TimedDisable() {

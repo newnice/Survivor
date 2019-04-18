@@ -142,29 +142,7 @@ namespace Nightmare {
                 gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
             }
         }
-
-        private void DebugShot(RaycastHit rayHit) {
-            var sb = new StringBuilder();
-            sb.Append("Hit: ");
-            sb.Append(rayHit.collider.name);
-
-            sb.Append("\nDistance: ");
-            sb.Append(rayHit.distance);
-
-            sb.Append("\nCollider: ");
-            sb.Append(rayHit.collider);
-
-            sb.Append("\nTrigger: ");
-            sb.Append(rayHit.collider.isTrigger);
-
-            sb.Append("\nPoint: ");
-            sb.Append(rayHit.point);
-
-            sb.Append("\nRigidbody: ");
-            sb.Append(rayHit.rigidbody);
-
-            Debug.Log(sb.ToString());
-        }
+     
 
         private void ChangeGunLine(float midPoint) {
             AnimationCurve curve = new AnimationCurve();
@@ -187,7 +165,7 @@ namespace Nightmare {
         void ShootGrenade() {
             AdjustGrenadeStock(-1);
             timer = timeBetweenBullets - grenadeFireDelay;
-            PoolManager.Pull("Grenade", transform.position, Quaternion.identity);
+            PoolManager.SharedInstance.Pull("Grenade", transform.position, Quaternion.identity);
             EventManager.TriggerEvent(NightmareEvent.ShootGrenade, grenadeSpeed * transform.forward);
         }
     }

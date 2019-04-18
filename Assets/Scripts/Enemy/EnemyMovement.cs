@@ -33,14 +33,15 @@ namespace Nightmare {
             ScaleVision(1f);
             IsPsychic();
             timer = 0f;
-            EventManager.StartListening(NightmareEvent.GrenadeExploded, grenadePos => HearPoint((Vector3) grenadePos));
+            EventManager.StartListening(NightmareEvent.NoisePropagated, grenadePos => HearPoint((Vector3) grenadePos));
             EventManager.StartListening(NightmareEvent.EnemyKilled, obj => HearDeathPoint((EnemyHealth) obj));
         }
 
         protected override void OnDisable() {
             base.OnDisable();
-            EventManager.StopListening(NightmareEvent.GrenadeExploded, grenadePos => HearPoint((Vector3) grenadePos));
+            EventManager.StopListening(NightmareEvent.NoisePropagated, grenadePos => HearPoint((Vector3) grenadePos));
             EventManager.StopListening(NightmareEvent.EnemyKilled, obj => HearDeathPoint((EnemyHealth) obj));
+            _nav.enabled = false;
         }
 
 

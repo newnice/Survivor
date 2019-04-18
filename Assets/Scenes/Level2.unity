@@ -408,7 +408,7 @@ PrefabInstance:
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
       propertyPath: angryFaerie.areaCost
-      value: 64
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -835,7 +835,7 @@ PrefabInstance:
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
       propertyPath: angryFaerie.areaCost
-      value: 64
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -1566,7 +1566,7 @@ GameObject:
   - component: {fileID: 516268204}
   - component: {fileID: 516268205}
   m_Layer: 0
-  m_Name: ZomBunnySpawnPoint
+  m_Name: SpawnPoint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1579,12 +1579,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516268203}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.26, y: -1.84, z: 13.44}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 22.26, y: -1.84, z: 13.439999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1908970055}
-  m_RootOrder: 2
+  m_Father: {fileID: 592266872}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &516268205
 SphereCollider:
@@ -1599,6 +1599,39 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &592266871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 592266872}
+  m_Layer: 0
+  m_Name: SpawnPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &592266872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592266871}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 516268204}
+  - {fileID: 1013331955}
+  - {fileID: 2053857402}
+  m_Father: {fileID: 1908970055}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &595598483
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,7 +2663,7 @@ GameObject:
   - component: {fileID: 1013331955}
   - component: {fileID: 1013331956}
   m_Layer: 0
-  m_Name: ZomBearSpawnPoint
+  m_Name: SpawnPoint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2647,8 +2680,8 @@ Transform:
   m_LocalPosition: {x: 6.61, y: -1.85, z: -24.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1908970055}
-  m_RootOrder: 3
+  m_Father: {fileID: 592266872}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1013331956
 SphereCollider:
@@ -4054,7 +4087,7 @@ PrefabInstance:
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
       propertyPath: angryFaerie.areaCost
-      value: 64
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114715740767866482, guid: bfc27685a8b39124baf31b73cb9b0583,
         type: 3}
@@ -4781,7 +4814,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1687149275}
   - component: {fileID: 1687149274}
-  - component: {fileID: 1687149273}
   - component: {fileID: 1687149272}
   m_Layer: 0
   m_Name: EnemyManager
@@ -4799,33 +4831,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687149271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb4291fd5d37862448290bf2de777045, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e8b0ee512cbdf947aa46e044aaada96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
-  spawnTime: 6
-  spawnPoints:
-  - {fileID: 516268204}
-  - {fileID: 1013331955}
-  - {fileID: 2053857402}
---- !u!114 &1687149273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687149271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb4291fd5d37862448290bf2de777045, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
-  spawnTime: 2.8
-  spawnPoints:
-  - {fileID: 516268204}
-  - {fileID: 1013331955}
-  - {fileID: 2053857402}
+  pools:
+  - key: ZomBunny
+    poolObject: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
+    size: 20
+    parentingGroup: {fileID: 1687149275}
+    expandable: 1
+  - key: ZomBear
+    poolObject: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
+    size: 10
+    parentingGroup: {fileID: 1687149275}
+    expandable: 1
+  - key: Hellephant
+    poolObject: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
+    size: 5
+    parentingGroup: {fileID: 1687149275}
+    expandable: 1
 --- !u!114 &1687149274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4838,12 +4862,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4291fd5d37862448290bf2de777045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
-  spawnTime: 1.4
+  maxEnemyCount: 100
+  broadcastProbability: 0.1
+  spawnConfig:
+  - enemyPrefab: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
+    spawnTime: 2.7
+  - enemyPrefab: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
+    spawnTime: 5.3
+  - enemyPrefab: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
+    spawnTime: 10
   spawnPoints:
   - {fileID: 516268204}
   - {fileID: 1013331955}
   - {fileID: 2053857402}
+  _enemyCount: 0
 --- !u!4 &1687149275
 Transform:
   m_ObjectHideFlags: 0
@@ -5523,9 +5555,7 @@ Transform:
   m_Children:
   - {fileID: 613185992}
   - {fileID: 2051775411}
-  - {fileID: 516268204}
-  - {fileID: 1013331955}
-  - {fileID: 2053857402}
+  - {fileID: 592266872}
   - {fileID: 1121029143}
   - {fileID: 108385569}
   - {fileID: 1338040557}
@@ -5727,7 +5757,7 @@ GameObject:
   - component: {fileID: 2053857402}
   - component: {fileID: 2053857403}
   m_Layer: 0
-  m_Name: HellephantSpawnPoint
+  m_Name: SpawnPoint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5744,8 +5774,8 @@ Transform:
   m_LocalPosition: {x: -23.28, y: -1.79, z: 5.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1908970055}
-  m_RootOrder: 4
+  m_Father: {fileID: 592266872}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &2053857403
 SphereCollider:
