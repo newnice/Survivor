@@ -1,37 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Object;
 
-public class PoolManager : MonoBehaviour {
-    [SerializeField] private Pool[] pools = null;
+public class PoolManager<T> : MonoBehaviour  where T:Pool{
+    [SerializeField] private List<T> pools = null;
     private Dictionary<string, Pool> cache;
 
-    private static PoolManager _sharedManger;
-
-    public static PoolManager SharedInstance {
-        get {
-            if (_sharedManger == null) {
-                _sharedManger = FindObjectOfType(typeof(PoolManager)) as PoolManager;
-
-                if (_sharedManger == null) {
-                    Debug.LogError("There needs to be one active PoolManger script on a GameObject in your scene.");
-                }
-            }
-
-            return _sharedManger;
-        }
+    protected Dictionary<string, Pool> Cache => cache;
+    protected List<T> Pools => pools;
+   
+    protected virtual void Start() {
+        if (pools == null) return;
+        cache = new Dictionary<string, Pool>(pools.Count);
+        InitPoolCache();
     }
 
-    void Start() {
-        if (pools == null) return;
-        cache = new Dictionary<string, Pool>(pools.Length);
-
+    protected virtual void InitPoolCache() {
         foreach (var tempPool in pools) {
-            cache[tempPool.key] = new Pool(tempPool.key, tempPool.poolObject, tempPool.size,
+            cache[tempPool.key] = (T) new Pool(tempPool.key, tempPool.poolObjectPrefab, tempPool.size,
                 tempPool.parentingGroup, tempPool.expandable);
         }
-    }
-
+    } 
 
     /// <summary>
     /// Grabs the next item from the pool.
@@ -51,25 +41,27 @@ public class PoolManager : MonoBehaviour {
     }
 }
 
-[System.Serializable]
+
+
+[Serializable]
 public class Pool {
     public string key;
-    public GameObject poolObject;
     public int size;
     public Transform parentingGroup;
     public bool expandable;
-
+    
+    public GameObject poolObjectPrefab;
+    
     private List<GameObject> _poolObjects;
 
     public Pool(string keyName, GameObject obj, int count, Transform parent = null, bool dynamicExpansion = false) {
         key = keyName;
-        poolObject = obj;
+        poolObjectPrefab = obj;
         size = count;
         expandable = dynamicExpansion;
         parentingGroup = parent;
         _poolObjects = new List<GameObject>();
-
-
+        
         for (var i = 0; i < count; i++) {
             AddItem();
         }
@@ -95,8 +87,8 @@ public class Pool {
 
     private GameObject AddItem(bool keepActive = false) {
         var index = _poolObjects.Count;
-        _poolObjects.Add(Instantiate(poolObject));
-        _poolObjects[index].name = poolObject.name + "_" + index.ToString().PadLeft(4, '0');
+        _poolObjects.Add(Instantiate(poolObjectPrefab));
+        _poolObjects[index].name = poolObjectPrefab.name + "_" + index.ToString().PadLeft(4, '0');
         _poolObjects[index].SetActive(keepActive);
         if (parentingGroup != null) {
             _poolObjects[index].transform.parent = parentingGroup;
@@ -104,4 +96,6 @@ public class Pool {
 
         return _poolObjects[index];
     }
+    
+  
 }

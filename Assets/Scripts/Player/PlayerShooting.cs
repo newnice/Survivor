@@ -165,7 +165,7 @@ namespace Nightmare {
         void ShootGrenade() {
             AdjustGrenadeStock(-1);
             timer = timeBetweenBullets - grenadeFireDelay;
-            PoolManager.SharedInstance.Pull("Grenade", transform.position, Quaternion.identity);
+            SharedPoolManager.Instance.Pull("Grenade", transform.position, Quaternion.identity);
             EventManager.TriggerEvent(NightmareEvent.ShootGrenade, grenadeSpeed * transform.forward);
         }
     }

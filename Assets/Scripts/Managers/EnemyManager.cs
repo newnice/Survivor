@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 namespace Nightmare {
     [Serializable]
     public class SpawnConfiguration {
-        public GameObject enemyPrefab;
+        public string enemyName;
         public float spawnTime;
         internal float leftTime;
     }
@@ -23,11 +23,11 @@ namespace Nightmare {
         private IDictionary<Transform, bool> _notVisibleSpawnPoints = new Dictionary<Transform, bool>();
         public int _enemyCount;
         private Transform _player;
-        private PoolManager _poolManager;
+        private EnemyPoolManager _poolManager;
 
         protected void Start() {
             _player = GameObject.FindGameObjectWithTag(TagNames.Player).transform;
-            _poolManager = GetComponent<PoolManager>();
+            _poolManager = GetComponent<EnemyPoolManager>();
 
             foreach (var spawnConfiguration in spawnConfig) {
                 var sc = spawnConfiguration;
@@ -119,7 +119,7 @@ namespace Nightmare {
                 return;
             }
 
-            var enemyClone = _poolManager.Pull(enemy.enemyPrefab.name, spawnPoint.position, spawnPoint.rotation);
+            var enemyClone = _poolManager.Pull(enemy.enemyName, spawnPoint.position, spawnPoint.rotation);
             enemyClone.transform.parent = transform;
             UpdateEnemyCount(1);
         }

@@ -148,7 +148,7 @@ public class FaerieCircle : MonoBehaviour {
         }
 
         remainingGrenades--;
-        PoolManager.SharedInstance.Pull("Grenade", transform.position, Quaternion.identity);
+        SharedPoolManager.Instance.Pull("Grenade", transform.position, Quaternion.identity);
     }
 
     private void MakeAngry() {

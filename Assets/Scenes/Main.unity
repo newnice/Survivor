@@ -2417,16 +2417,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1222083998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8b0ee512cbdf947aa46e044aaada96, type: 3}
+  m_Script: {fileID: 11500000, guid: 22ffae222b5d4d41af255ce2d2bcd284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
   - key: Grenade
-    poolObject: {fileID: 1105787354104060, guid: 41a4c48eef428174cb5039adb608d30c,
-      type: 3}
     size: 10
     parentingGroup: {fileID: 1222083999}
     expandable: 1
+    poolObjectPrefab: {fileID: 1105787354104060, guid: 41a4c48eef428174cb5039adb608d30c,
+      type: 3}
 --- !u!1 &1262351022
 GameObject:
   m_ObjectHideFlags: 0
@@ -3527,6 +3527,7 @@ GameObject:
   - component: {fileID: 1796129603}
   - component: {fileID: 1796129602}
   - component: {fileID: 1796129604}
+  - component: {fileID: 1796129605}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -3579,6 +3580,18 @@ MonoBehaviour:
   levelNames:
   - Level1
   - Level2
+--- !u!114 &1796129605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796129601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21254d1cc32d4341b5985389a27e495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1837071935
 GameObject:
   m_ObjectHideFlags: 0

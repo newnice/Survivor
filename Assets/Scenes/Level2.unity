@@ -4831,25 +4831,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1687149271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8b0ee512cbdf947aa46e044aaada96, type: 3}
+  m_Script: {fileID: 11500000, guid: acfcce9d45ff4596a3fff70fd5baf8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
   - key: ZomBunny
-    poolObject: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
     size: 20
     parentingGroup: {fileID: 1687149275}
     expandable: 1
+    poolObjectPrefab: {fileID: 0}
+    enemyAssetName: enemy/zombunny
   - key: ZomBear
-    poolObject: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
     size: 10
     parentingGroup: {fileID: 1687149275}
     expandable: 1
+    poolObjectPrefab: {fileID: 0}
+    enemyAssetName: enemy/zombear
   - key: Hellephant
-    poolObject: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
     size: 5
     parentingGroup: {fileID: 1687149275}
     expandable: 1
+    poolObjectPrefab: {fileID: 0}
+    enemyAssetName: enemy/hellephant
+  enemyCommonBundle: enemy/common
 --- !u!114 &1687149274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4865,11 +4869,11 @@ MonoBehaviour:
   maxEnemyCount: 100
   broadcastProbability: 0.1
   spawnConfig:
-  - enemyPrefab: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
+  - enemyName: ZomBunny
     spawnTime: 2.7
-  - enemyPrefab: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
+  - enemyName: ZomBear
     spawnTime: 5.3
-  - enemyPrefab: {fileID: 153412, guid: 548c56f4bcf4db24b8aa057e9846a005, type: 3}
+  - enemyName: Hellephant
     spawnTime: 10
   spawnPoints:
   - {fileID: 516268204}
