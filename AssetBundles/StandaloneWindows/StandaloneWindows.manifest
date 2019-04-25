@@ -1,13 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3200540906
+CRC: 1415395788
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: enemy/hellephant
-      Dependencies:
-        Dependency_0: enemy/common
+      Name: enemy/common
+      Dependencies: {}
     Info_1:
-      Name: enemy/zombear
+      Name: enemy/hellephant
       Dependencies:
         Dependency_0: enemy/common
     Info_2:
@@ -15,5 +14,6 @@ AssetBundleManifest:
       Dependencies:
         Dependency_0: enemy/common
     Info_3:
-      Name: enemy/common
-      Dependencies: {}
+      Name: enemy/zombear
+      Dependencies:
+        Dependency_0: enemy/common

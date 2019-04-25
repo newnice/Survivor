@@ -2,8 +2,9 @@
 
 public class AssetBundleLoader : MonoBehaviour {
     public static GameObject LoadAsset(string assetBundleName, string assetName) {
-        //TODO: remove  relative to platform path name
-        var myLoadedAssetBundle = AssetBundle.LoadFromFile($"{Application.dataPath}/../AssetBundles/StandaloneWindows/{assetBundleName}");
+
+        var path = $"{Application.streamingAssetsPath}/{assetBundleName}";
+        var myLoadedAssetBundle = AssetBundle.LoadFromFile(path);
   
         if (myLoadedAssetBundle == null) {
             Debug.Log($"Failed to load AssetBundle {assetBundleName}!");

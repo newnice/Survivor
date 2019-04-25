@@ -1,0 +1,54 @@
+ManifestFileVersion: 0
+CRC: 4026021542
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7c056f15c1c00e478120617b44c88e1e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 82184cd659682e5afb3df766f4858c21
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 241
+  Script: {instanceID: 0}
+- Class: 243
+  Script: {instanceID: 0}
+- Class: 245
+  Script: {instanceID: 0}
+Assets:
+- Assets/Textures/ZomBunnyEmissive.png
+- Assets/Materials/FluffParticleMaterial.mat
+- Assets/Textures/ZomBunnyOcclusion.png
+- Assets/Textures/ZomBunnyDiffuse.png
+- Assets/Textures/ZomBunnySpecular.tif
+- Assets/Textures/ZomBunnyNormals.png
+- Assets/Animation/EnemyAnimatorController.controller
+- Assets/Audio/Mixers/SoundEffects.mixer
+- Assets/Audio/Mixers/MasterMixer.mixer
+- Assets/Materials/ZombunnyMaterial.mat
+- Assets/Textures/PuffSprite.png
+- Assets/Models/Characters/Zombunny.fbx
+- Assets/Materials/EyesMaterial.mat
+Dependencies: []
