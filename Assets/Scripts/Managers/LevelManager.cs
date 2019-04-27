@@ -9,6 +9,7 @@ namespace Nightmare {
         private int _currentLevel = -1;
         private Scene _currentScene;
         private CinematicsManager _cinematics;
+        private AdsManager _adsManager;
 
         private void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -24,6 +25,7 @@ namespace Nightmare {
 
         private void Awake() {
             _cinematics = GetComponentInChildren<CinematicsManager>();
+            _adsManager = FindObjectOfType<AdsManager>();
         }
 
         private void Start() {
@@ -42,6 +44,7 @@ namespace Nightmare {
 
         private void PlayCinematics() {
             if (_currentLevel > 0)
+                _adsManager.ShowAds();
                 _cinematics.PlayRealtime();
         }
 
