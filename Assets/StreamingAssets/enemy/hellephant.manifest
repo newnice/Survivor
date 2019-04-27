@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 202837723
+CRC: 1618254424
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1329864daa13a0142d9e2dffd9c30bba
+    Hash: e24b8c404ba5970875a35c54efe6f129
   TypeTreeHash:
     serializedVersion: 2
     Hash: 37a17a19b7e5428f7458720bbf31d77a
@@ -64,4 +64,4 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/Enemies/Hellephant.prefab
 Dependencies:
-- D:/EgorovaTS/Develop/games/Coursera/CourseraSurvivor/AssetBundles/StandaloneWindows/enemy/common
+- D:/EgorovaTS/Develop/games/Coursera/CourseraSurvivor/AssetBundles/Android/enemy/common

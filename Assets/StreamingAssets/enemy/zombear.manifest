@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4164622976
+CRC: 1072505781
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 997e5da1739c934e4c2e7a6ccd95bcd8
+    Hash: f86eb5c36fd33ef20d436304acc40c49
   TypeTreeHash:
     serializedVersion: 2
     Hash: c0e0cebc942c820675844eee90452baa
@@ -62,4 +62,4 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/Enemies/ZomBear.prefab
 Dependencies:
-- D:/EgorovaTS/Develop/games/Coursera/CourseraSurvivor/AssetBundles/StandaloneWindows/enemy/common
+- D:/EgorovaTS/Develop/games/Coursera/CourseraSurvivor/AssetBundles/Android/enemy/common

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1532823026
+CRC: 3921547978
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: eee4007c46f6e8630f07705cb787d02b
+    Hash: 3f07c5360777ac31700bd338d96a2892
   TypeTreeHash:
     serializedVersion: 2
     Hash: 831703388e76e44fbfef9eb1222be642
@@ -58,4 +58,4 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/Enemies/ZomBunny.prefab
 Dependencies:
-- D:/EgorovaTS/Develop/games/Coursera/CourseraSurvivor/AssetBundles/StandaloneWindows/enemy/common
+- D:/EgorovaTS/Develop/games/Coursera/CourseraSurvivor/AssetBundles/Android/enemy/common

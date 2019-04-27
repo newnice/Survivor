@@ -15,6 +15,7 @@ namespace Nightmare {
                     tempPool.parentingGroup, tempPool.expandable);
             }
 
+            AssetBundleLoader.UnloadAllBundles();
             AssetBundleLoader.ClearLoadCache();
         }
     }

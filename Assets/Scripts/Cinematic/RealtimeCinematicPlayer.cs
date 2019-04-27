@@ -8,7 +8,7 @@ public class RealtimeCinematicPlayer : MonoBehaviour {
     private PlayableDirector _director;
 
 
-    void Start() {
+    void Awake() {
         _cinematicCamera = GetComponent<CinemachineVirtualCamera>();
         _director = GetComponent<PlayableDirector>();
         _director.stopped += o => DisableCamera();
