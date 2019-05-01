@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnitySampleAssets.CrossPlatformInput;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace Nightmare {
     public class PlayerMovement : PausableObject {
@@ -112,7 +112,7 @@ namespace Nightmare {
                 Quaternion newRotatation = Quaternion.LookRotation(playerToMouse);
 
                 // Set the player's rotation to this new rotation.
-                playerRigidbody.MoveRotation(newRotatation);
+                _playerRigidbody.MoveRotation(newRotatation);
             }
 #endif
         }

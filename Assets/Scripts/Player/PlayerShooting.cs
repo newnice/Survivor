@@ -1,68 +1,56 @@
 ﻿using UnityEngine;
-using System.Text;
 
 namespace Nightmare {
     public class PlayerShooting : PausableObject {
+        private const float EffectsDisplayTime = 0.2f;
+
         public int damagePerShot = 20;
         public float timeBetweenBullets = 0.15f;
         public float range = 100f;
-        public GameObject grenade;
-        public float grenadeSpeed = 200f;
         public float grenadeFireDelay = 0.5f;
-
-        float timer;
-        Ray shootRay;
-        RaycastHit shootHit;
-        int shootableMask;
-        ParticleSystem gunParticles;
-        LineRenderer gunLine;
-        AudioSource gunAudio;
-        Light gunLight;
         public Light faceLight;
-        float effectsDisplayTime = 0.2f;
-        int grenadeStock = 0;
+
+        private float _timer;
+        private Ray _shootRay;
+        private RaycastHit _shootHit;
+        private int _shootableMask;
+        private ParticleSystem _gunParticles;
+        private LineRenderer _gunLine;
+        private AudioSource _gunAudio;
+        private Light _gunLight;
+
+
+        private AdsManager _adsManager;
+        private GrenadeManager _grenadeManager;
 
         void Awake() {
             // Create a layer mask for the Shootable layer.
-            shootableMask = LayerMask.GetMask("Shootable", "Enemy");
+            _shootableMask = LayerMask.GetMask("Shootable", "Enemy");
 
             // Set up the references.
-            gunParticles = GetComponent<ParticleSystem>();
-            gunLine = GetComponent<LineRenderer>();
-            gunAudio = GetComponent<AudioSource>();
-            gunLight = GetComponent<Light>();
-            //faceLight = GetComponentInChildren<Light> ();
-
-            AdjustGrenadeStock(0);
+            _gunParticles = GetComponent<ParticleSystem>();
+            _gunLine = GetComponent<LineRenderer>();
+            _gunAudio = GetComponent<AudioSource>();
+            _gunLight = GetComponent<Light>();
+            _adsManager = FindObjectOfType<AdsManager>();
+            _grenadeManager = FindObjectOfType<GrenadeManager>();
         }
 
-        protected override void OnEnable() {
-            base.OnEnable();
-            EventManager.StartListening(NightmareEvent.CollectGrenade, o=>CollectGrenade());
-            EventManager.StartListening(NightmareEvent.GameOver, o=> ResetGrenades());
-        }
-
-        private void ResetGrenades() {
-            grenadeStock = 0;
-        }
-
-        protected override void OnDisable() {
-            base.OnDisable();
-            EventManager.StopListening(NightmareEvent.CollectGrenade, o=>CollectGrenade());
-            EventManager.StopListening(NightmareEvent.GameOver, o=> ResetGrenades());
-        }
 
         void Update() {
             if (IsPausedGame) return;
             // Add the time since Update was last called to the timer.
-            timer += Time.deltaTime;
+            _timer += Time.deltaTime;
 
 #if !MOBILE_INPUT
-            if (timer >= timeBetweenBullets && Time.timeScale != 0) {
+            if (_timer >= timeBetweenBullets && Time.timeScale != 0) {
                 // If the Fire1 button is being press and it's time to fire...
-                if (Input.GetButton("Fire2") && grenadeStock > 0) {
-                    // ... shoot a grenade.
-                    ShootGrenade();
+                if (Input.GetButton("Fire2")) {
+                    if (_grenadeManager.HasGrenades())
+                        ShootGrenade();
+                    else {
+                        _adsManager.OfferAdsForGrenades();
+                    }
                 }
 
                 // If the Fire1 button is being press and it's time to fire...
@@ -81,7 +69,7 @@ namespace Nightmare {
             }
 #endif
             // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
-            if (timer >= timeBetweenBullets * effectsDisplayTime) {
+            if (_timer >= timeBetweenBullets * EffectsDisplayTime) {
                 // ... disable the effects.
                 DisableEffects();
             }
@@ -90,42 +78,42 @@ namespace Nightmare {
 
         public void DisableEffects() {
             // Disable the line renderer and the light.
-            gunLine.enabled = false;
+            _gunLine.enabled = false;
             faceLight.enabled = false;
-            gunLight.enabled = false;
+            _gunLight.enabled = false;
         }
 
 
         void Shoot() {
             // Reset the timer.
-            timer = 0f;
+            _timer = 0f;
 
             // Play the gun shot audioclip.
-            gunAudio.Play();
+            _gunAudio.Play();
 
             // Enable the lights.
-            gunLight.enabled = true;
+            _gunLight.enabled = true;
             faceLight.enabled = true;
 
             // Stop the particles from playing if they were, then start the particles.
-            gunParticles.Stop();
-            gunParticles.Play();
+            _gunParticles.Stop();
+            _gunParticles.Play();
 
             // Enable the line renderer and set it's first position to be the end of the gun.
-            gunLine.enabled = true;
-            gunLine.SetPosition(0, transform.position);
+            _gunLine.enabled = true;
+            _gunLine.SetPosition(0, transform.position);
 
             // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
-            shootRay.origin = transform.position;
-            shootRay.direction = transform.forward;
+            _shootRay.origin = transform.position;
+            _shootRay.direction = transform.forward;
 
             // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-            if (Physics.Raycast(shootRay, out shootHit, range, shootableMask)) {
+            if (Physics.Raycast(_shootRay, out _shootHit, range, _shootableMask)) {
                 //DebugShot(shootHit);
                 Debug.DrawRay(transform.position, range * transform.forward, Color.red, 1f);
 
                 // Try and find an EnemyHealth script on the gameobject hit.
-                EnemyHealth enemyHealth = shootHit.collider.GetComponent<EnemyHealth>();
+                EnemyHealth enemyHealth = _shootHit.collider.GetComponent<EnemyHealth>();
 
                 // If the EnemyHealth component exist...
                 if (enemyHealth != null) {
@@ -134,15 +122,15 @@ namespace Nightmare {
                 }
 
                 // Set the second position of the line renderer to the point the raycast hit.
-                gunLine.SetPosition(1, shootHit.point);
+                _gunLine.SetPosition(1, _shootHit.point);
             }
             // If the raycast didn't hit anything on the shootable layer...
             else {
                 // ... set the second position of the line renderer to the fullest extent of the gun's range.
-                gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+                _gunLine.SetPosition(1, _shootRay.origin + _shootRay.direction * range);
             }
         }
-     
+
 
         private void ChangeGunLine(float midPoint) {
             AnimationCurve curve = new AnimationCurve();
@@ -151,22 +139,13 @@ namespace Nightmare {
             curve.AddKey(midPoint, 0.5f);
             curve.AddKey(1f, 1f);
 
-            gunLine.widthCurve = curve;
+            _gunLine.widthCurve = curve;
         }
 
-        private void CollectGrenade() {
-            AdjustGrenadeStock(1);
-        }
-
-        private void AdjustGrenadeStock(int change) {
-            grenadeStock += change;
-        }
 
         void ShootGrenade() {
-            AdjustGrenadeStock(-1);
-            timer = timeBetweenBullets - grenadeFireDelay;
-            SharedPoolManager.Instance.Pull("Grenade", transform.position, Quaternion.identity);
-            EventManager.TriggerEvent(NightmareEvent.ShootGrenade, grenadeSpeed * transform.forward);
+            _timer = timeBetweenBullets - grenadeFireDelay;
+            EventManager.TriggerEvent(NightmareEvent.ShootGrenade, transform);
         }
     }
 }

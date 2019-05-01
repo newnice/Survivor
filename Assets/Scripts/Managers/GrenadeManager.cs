@@ -6,7 +6,6 @@ namespace Nightmare {
         private int _grenades; // The player's grenades count.
         private Text _gText; // Reference to the Text component.
 
-
         void Awake() {
             // Set up the reference.
             _gText = GetComponent<Text>();
@@ -15,33 +14,35 @@ namespace Nightmare {
         }
 
         protected virtual void OnEnable() {
-            EventManager.StartListening(NightmareEvent.CollectGrenade, o=>IncrementGrenades());
-            EventManager.StartListening(NightmareEvent.ShootGrenade, o=>DecrementGrenades());
-            EventManager.StartListening(NightmareEvent.GameOver, o=>UpdateCount(-_grenades));
+            EventManager.StartListening(NightmareEvent.CollectGrenade, count => UpdateGrenadeCount((int) count));
+            EventManager.StartListening(NightmareEvent.ShootGrenade, t => ShootGrenade((Transform) t));
+            EventManager.StartListening(NightmareEvent.GameOver, o => UpdateGrenadeCount(-_grenades));
         }
 
-        private void DecrementGrenades() {
-            UpdateCount(-1);
+        private void ShootGrenade(Transform t) {
+            SharedPoolManager.Instance.Pull("Grenade", t.position, Quaternion.identity);
+            UpdateGrenadeCount(-1);
         }
 
-        private void IncrementGrenades() {
-            UpdateCount(1);
-        }
 
         protected virtual void OnDisable() {
-            EventManager.StopListening(NightmareEvent.CollectGrenade, o=>IncrementGrenades());
-            EventManager.StopListening(NightmareEvent.ShootGrenade, o=>DecrementGrenades());
-            EventManager.StopListening(NightmareEvent.GameOver, o=>UpdateCount(-_grenades));
+            EventManager.StopListening(NightmareEvent.CollectGrenade, count => UpdateGrenadeCount((int) count));
+            EventManager.StopListening(NightmareEvent.ShootGrenade, o => ShootGrenade((Transform) o));
+            EventManager.StopListening(NightmareEvent.GameOver, o => UpdateGrenadeCount(-_grenades));
         }
 
 
-        private void UpdateCount(int diff) {
+        private void UpdateGrenadeCount(int diff) {
             _grenades += diff;
         }
 
 
         void Update() {
             _gText.text = $"Grenades: {_grenades}";
+        }
+
+        public bool HasGrenades() {
+            return _grenades > 0;
         }
     }
 }

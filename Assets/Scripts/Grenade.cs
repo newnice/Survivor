@@ -7,6 +7,7 @@ namespace Nightmare {
         public int explosiveDamage = 50;
         public float explosiveRadius = 2f;
         public float timeOut = 3f;
+        public float grenadeSpeed = 400f;
 
         private bool isPickup;
         private Rigidbody rb;
@@ -33,7 +34,7 @@ namespace Nightmare {
             tr.enabled = false;
             ps.Stop();
             isPickup = true;
-            EventManager.StartListening(NightmareEvent.ShootGrenade, o=>Shoot((Vector3)o));
+            EventManager.StartListening(NightmareEvent.ShootGrenade, o=>Shoot((Transform)o));
         }
 
         void Update() {
@@ -50,7 +51,7 @@ namespace Nightmare {
             if (isPickup) {
                 if (coll.CompareTag(TagNames.Player)) {
                     Disable();
-                    EventManager.TriggerEvent(NightmareEvent.CollectGrenade);
+                    EventManager.TriggerEvent(NightmareEvent.CollectGrenade, 1);
                 }
             }
             else {
@@ -60,7 +61,7 @@ namespace Nightmare {
             }
         }
 
-        private void Shoot(Vector3 force) {
+        private void Shoot(Transform t) {
             if (timer > 0f)
                 return;
 
@@ -68,6 +69,7 @@ namespace Nightmare {
             mr.enabled = true;
             tr.enabled = true;
             timer = timeOut;
+            var force = grenadeSpeed * t.forward;
             rb.AddForce(force);
         }
 
@@ -98,7 +100,7 @@ namespace Nightmare {
             timer = -1;
             isPickup = false;
             gameObject.SetActive(false);
-            EventManager.StopListening(NightmareEvent.ShootGrenade, o=>Shoot((Vector3)o));
+            EventManager.StopListening(NightmareEvent.ShootGrenade, o=>Shoot((Transform)o));
         }
     }
 }
