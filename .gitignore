@@ -270,5 +270,3 @@ __pycache__/
 # Studio project files
 *.csproj
 
-#Android build
-android/
