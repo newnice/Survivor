@@ -14,7 +14,7 @@ public class IntroCinematicManager : MonoBehaviour {
     }
 
     protected virtual void Update() {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        if (!Input.GetKeyDown(KeyCode.Space) || !Input.GetKeyDown(KeyCode.Escape)) return;
         OnStopIntro();
     }
 
