@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace Nightmare {
@@ -11,6 +12,7 @@ namespace Nightmare {
         private Rigidbody _playerRigidbody; // Reference to the player's rigidbody.
 
         private Vector3 _initialPosition;
+        private UnityAction<object> _onGameOverAction;
 #if !MOBILE_INPUT
         private int _floorMask; // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
         private const float CamRayLength = 100f; // The length of the ray from the camera into the scene.
@@ -26,16 +28,17 @@ namespace Nightmare {
             _anim = GetComponent<Animator>();
             _playerRigidbody = GetComponent<Rigidbody>();
             _initialPosition = transform.position;
+            _onGameOverAction = o => ResetPosition();
         }
 
         protected override void OnEnable() {
             base.OnEnable();
-            EventManager.StartListening(NightmareEvent.GameOver, o=>ResetPosition());
+            EventManager.StartListening(NightmareEvent.GameOver, _onGameOverAction);
         }
 
         protected override void OnDisable() {
             base.OnDisable();
-            EventManager.StopListening(NightmareEvent.GameOver, o=>ResetPosition());
+            EventManager.StopListening(NightmareEvent.GameOver, _onGameOverAction);
         }
 
         private void ResetPosition() {
@@ -48,7 +51,7 @@ namespace Nightmare {
         }
 
         void FixedUpdate() {
-            if(IsPausedGame) return;
+            if (IsPausedGame) return;
             // Store the input axes.
             var h = CrossPlatformInputManager.GetAxisRaw("Horizontal");
             var v = CrossPlatformInputManager.GetAxisRaw("Vertical");
@@ -97,23 +100,18 @@ namespace Nightmare {
                 _playerRigidbody.MoveRotation(newRotatation);
             }
 #else
-            Vector3 turnDir =
- new Vector3(CrossPlatformInputManager.GetAxisRaw("Mouse X") , 0f , CrossPlatformInputManager.GetAxisRaw("Mouse Y"));
+            var turnDir =
+                new Vector3(CrossPlatformInputManager.GetAxisRaw("Mouse X"), 0f,
+                    CrossPlatformInputManager.GetAxisRaw("Mouse Y"));
 
-            if (turnDir != Vector3.zero)
-            {
-                // Create a vector from the player to the point on the floor the raycast from the mouse hit.
-                Vector3 playerToMouse = (transform.position + turnDir) - transform.position;
+            if (turnDir == Vector3.zero) return;
 
-                // Ensure the vector is entirely along the floor plane.
-                playerToMouse.y = 0f;
+            var playerToMouse =  turnDir;
+            playerToMouse.y = 0f;
 
-                // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
-                Quaternion newRotatation = Quaternion.LookRotation(playerToMouse);
+            var newRotatation = Quaternion.LookRotation(playerToMouse);
 
-                // Set the player's rotation to this new rotation.
-                _playerRigidbody.MoveRotation(newRotatation);
-            }
+            _playerRigidbody.MoveRotation(newRotatation);
 #endif
         }
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace Nightmare {
     public class PlayerShooting : PausableObject {
@@ -42,32 +43,22 @@ namespace Nightmare {
             // Add the time since Update was last called to the timer.
             _timer += Time.deltaTime;
 
-#if !MOBILE_INPUT
             if (_timer >= timeBetweenBullets && Time.timeScale != 0) {
-                // If the Fire1 button is being press and it's time to fire...
-                if (Input.GetButton("Fire2")) {
+                // If there is input on the shoot direction stick and it's time to fire...
+
+                if (CrossPlatformInputManager.GetButton("Fire1")) {
+                    // ... shoot the gun
+                    Shoot();
+                }
+
+                if (CrossPlatformInputManager.GetButton("Fire2") && _timer >= timeBetweenBullets)
                     if (_grenadeManager.HasGrenades())
                         ShootGrenade();
                     else {
                         _adsManager.OfferAdsForGrenades();
                     }
-                }
-
-                // If the Fire1 button is being press and it's time to fire...
-                else if (Input.GetButton("Fire1")) {
-                    // ... shoot the gun.
-                    Shoot();
-                }
             }
 
-#else
-            // If there is input on the shoot direction stick and it's time to fire...
-            if ((CrossPlatformInputManager.GetAxisRaw("Mouse X") != 0 || CrossPlatformInputManager.GetAxisRaw("Mouse Y") != 0) && timer >= timeBetweenBullets)
-            {
-                // ... shoot the gun
-                Shoot();
-            }
-#endif
             // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
             if (_timer >= timeBetweenBullets * EffectsDisplayTime) {
                 // ... disable the effects.
@@ -129,17 +120,6 @@ namespace Nightmare {
                 // ... set the second position of the line renderer to the fullest extent of the gun's range.
                 _gunLine.SetPosition(1, _shootRay.origin + _shootRay.direction * range);
             }
-        }
-
-
-        private void ChangeGunLine(float midPoint) {
-            AnimationCurve curve = new AnimationCurve();
-
-            curve.AddKey(0f, 0f);
-            curve.AddKey(midPoint, 0.5f);
-            curve.AddKey(1f, 1f);
-
-            _gunLine.widthCurve = curve;
         }
 
 
