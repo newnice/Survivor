@@ -16,7 +16,7 @@ namespace Nightmare {
             adsForGrenadesButton.onClick.AddListener(() => {
                 _timer = 0;
                 ShowRewardedAds(() =>
-                    EventManager.TriggerEvent(NightmareEvent.CollectGrenade, 3));
+                    EventManager.TriggerEvent(NightmareEvent.CollectGrenade, 2));
             });
         }
 

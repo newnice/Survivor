@@ -1,6 +1,9 @@
 ﻿using Nightmare;
+using Nightmare.UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public struct FaerieMood {
@@ -20,7 +23,7 @@ public class FaerieCircle : MonoBehaviour {
     public FaerieMood angryFaerie;
     [SerializeField] private int grenadeStock = 1;
     [SerializeField] private float cullRadius = 5f;
-    
+
     private float faerieSpeed;
     private float radius = 1f;
     private ParticleSystem faerieParticles;
@@ -33,6 +36,32 @@ public class FaerieCircle : MonoBehaviour {
     public float moveTimer = 0f;
     private CullingGroup cullGroup;
 
+    private UnityAction<object> onGenerousFaeriesAction;
+    private bool _isGenerous;
+    private StoreManager _storeManager;
+
+
+    private void Awake() {
+        onGenerousFaeriesAction = isGenerous => MakeGenerous((bool) isGenerous);
+        _storeManager = FindObjectOfType<StoreManager>();
+    }
+
+    protected void OnEnable() {
+        EventManager.StartListening(NightmareEvent.GenerousFaeriesActivated, onGenerousFaeriesAction);
+    }
+
+    protected void OnDisable() {
+        EventManager.StopListening(NightmareEvent.GenerousFaeriesActivated, onGenerousFaeriesAction);
+    }
+
+    private void MakeGenerous(bool isGenerous) {
+        _isGenerous = isGenerous;
+        if (_isGenerous)
+            remainingGrenades *= 2;
+        else
+            remainingGrenades = Mathf.CeilToInt(remainingGrenades / 2.0f);
+    }
+
     void Start() {
         PopulateParticleSystemCache();
         SetupStateBehaviours();
@@ -43,6 +72,8 @@ public class FaerieCircle : MonoBehaviour {
 
         remainingGrenades = grenadeStock;
         faerieSpeed = happyFaerie.speed;
+        if(_storeManager.IsFaeriesGenerous())
+            MakeGenerous(true);
     }
 
     private void SetupStateBehaviours() {
@@ -147,8 +178,11 @@ public class FaerieCircle : MonoBehaviour {
             return;
         }
 
-        remainingGrenades--;
-        SharedPoolManager.Instance.Pull("Grenade", transform.position, Quaternion.identity);
+        var spawnCount = _isGenerous ? 2 : 1;
+        for (var i = 0; i < spawnCount; i++) {
+            remainingGrenades--;
+            SharedPoolManager.Instance.Pull("Grenade", transform.position, Quaternion.identity);
+        }
     }
 
     private void MakeAngry() {

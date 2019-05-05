@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Nightmare {
@@ -19,6 +21,10 @@ namespace Nightmare {
         bool isDead;
         bool damaged;
 
+        private UnityAction<object> _onLevelCompleteAction;
+        private UnityAction<object> _onHealthIncreasedAction;
+
+
         void Awake() {
             // Setting up the references.
             anim = GetComponent<Animator>();
@@ -27,32 +33,43 @@ namespace Nightmare {
             playerShooting = GetComponentInChildren<PlayerShooting>();
 
             ResetPlayer();
+            _onLevelCompleteAction = score => CelebrateLevelComplete((int) score);
+            _onHealthIncreasedAction = perc => ScaleHealth((float) perc);
         }
 
-        protected virtual  void OnEnable() {
-            EventManager.StartListening(NightmareEvent.LevelCompleted, score=>CelebrateLevelComplete((int) score));
+
+        protected virtual void OnEnable() {
+            EventManager.StartListening(NightmareEvent.LevelCompleted, _onLevelCompleteAction);
+            EventManager.StartListening(NightmareEvent.HealthIncreased, _onHealthIncreasedAction);
         }
 
         private void OnDisable() {
-            EventManager.StopListening(NightmareEvent.LevelCompleted, score=>CelebrateLevelComplete((int) score));
+            EventManager.StopListening(NightmareEvent.LevelCompleted, _onLevelCompleteAction);
+            EventManager.StopListening(NightmareEvent.HealthIncreased, _onHealthIncreasedAction);
+        }
+
+        private void ScaleHealth(float scale) {
+            var oldHealth = startingHealth;
+            startingHealth = (int) (startingHealth * scale);
+            currentHealth += startingHealth - oldHealth;
+            var sliderRect = (healthSlider.transform as RectTransform);
+            sliderRect.sizeDelta = new Vector2(sliderRect.rect.width * scale, sliderRect.rect.height);
         }
 
         private void CelebrateLevelComplete(int currentScore) {
             anim.SetInteger(AnimationConstants.CurrentScoreAttribute, currentScore);
             anim.SetTrigger(AnimationConstants.LevelCompleteTrigger);
         }
-        
+
         private void ResetPlayer() {
             anim.SetBool(AnimationConstants.IsDeadAttribute, false);
             isDead = false;
             // Set the initial health of the player.
             currentHealth = startingHealth;
             healthSlider.value = currentHealth;
-            
+
             playerMovement.enabled = true;
             playerShooting.enabled = true;
-
-
         }
 
 

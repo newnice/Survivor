@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Nightmare {
     public class EnemyPoolManager : PoolManager<EnemyPool> {
-        [SerializeField] private string enemyCommonBundle;
+        [SerializeField] private string enemyCommonBundle="common";
 
         protected override void InitPoolCache() {
             AssetBundleLoader.LoadAsset(enemyCommonBundle, null);

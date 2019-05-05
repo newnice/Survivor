@@ -1,27 +1,23 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Nightmare {
     public class LevelManager : MonoBehaviour {
         [SerializeField] private List<string> levelNames = null;
-        [SerializeField] private Text levelCompletedText = null;
 
         private int _currentLevel = -1;
         private Scene _currentScene;
         private CinematicsManager _cinematics;
         private AdsManager _adsManager;
-        private PauseManager _pauseManager;
         private UnityAction<object> _onLevelComplete, _onRestartGame;
+        private UINotificationHelper _notificationHelper;
 
         private void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
             EventManager.StartListening(NightmareEvent.LevelCompleted, _onLevelComplete);
             EventManager.StartListening(NightmareEvent.RestartGame, _onRestartGame);
-            levelCompletedText.gameObject.SetActive(false);
         }
 
         private void OnDisable() {
@@ -33,9 +29,9 @@ namespace Nightmare {
         private void Awake() {
             _cinematics = GetComponentInChildren<CinematicsManager>();
             _adsManager = FindObjectOfType<AdsManager>();
-            _pauseManager = FindObjectOfType<PauseManager>();
-            _onLevelComplete = o => StartCoroutine(nameof(LoadNextLevel));
+            _onLevelComplete = o => LoadNextLevel();
             _onRestartGame = o => LoadLevel(0);
+            _notificationHelper = FindObjectOfType<UINotificationHelper>();
         }
 
         private void Start() {
@@ -72,14 +68,11 @@ namespace Nightmare {
             }
         }
 
-        private IEnumerator LoadNextLevel() {
-            _pauseManager.PauseObjects(true);
-            _currentLevel++;
-            levelCompletedText.gameObject.SetActive(true);
-            yield return new WaitForSeconds(5);
-            
-            levelCompletedText.gameObject.SetActive(false);
-            LoadLevel(_currentLevel);
+        private void LoadNextLevel() {
+            _notificationHelper.Inform("Level completed!!!", () => {
+                _currentLevel++;
+                LoadLevel(_currentLevel);
+            });
         }
     }
 }
